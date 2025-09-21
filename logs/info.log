@@ -1,0 +1,427 @@
+21.09.2025 23:35:15 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+21.09.2025 23:35:15 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+21.09.2025 23:35:45 | INFO | Получили вебхук
+21.09.2025 23:35:45 | INFO | Upsert для User
+21.09.2025 23:35:45 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+21.09.2025 23:35:46 | ERROR | Ошибка при поиске записи по фильтрам {'telegram_id': 804050819}: Could not determine join condition between parent/child tables on relationship ExersiceEntity.exersice - there are no foreign keys linking these tables.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify a 'primaryjoin' expression.
+21.09.2025 23:35:46 | ERROR | Ошибка при upsert: Could not determine join condition between parent/child tables on relationship ExersiceEntity.exersice - there are no foreign keys linking these tables.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify a 'primaryjoin' expression.
+21.09.2025 23:35:46 | INFO | Получили вебхук
+21.09.2025 23:35:46 | INFO | Upsert для User
+21.09.2025 23:35:46 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+21.09.2025 23:35:46 | ERROR | Ошибка при поиске записи по фильтрам {'telegram_id': 804050819}: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[ExersiceEntity(exersice_entities)]'. Original exception was: Could not determine join condition between parent/child tables on relationship ExersiceEntity.exersice - there are no foreign keys linking these tables.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify a 'primaryjoin' expression.
+21.09.2025 23:35:46 | ERROR | Ошибка при upsert: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[ExersiceEntity(exersice_entities)]'. Original exception was: Could not determine join condition between parent/child tables on relationship ExersiceEntity.exersice - there are no foreign keys linking these tables.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify a 'primaryjoin' expression.
+21.09.2025 23:35:48 | INFO | Получили вебхук
+21.09.2025 23:35:48 | INFO | Upsert для User
+21.09.2025 23:35:48 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+21.09.2025 23:35:48 | ERROR | Ошибка при поиске записи по фильтрам {'telegram_id': 804050819}: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[ExersiceEntity(exersice_entities)]'. Original exception was: Could not determine join condition between parent/child tables on relationship ExersiceEntity.exersice - there are no foreign keys linking these tables.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify a 'primaryjoin' expression.
+21.09.2025 23:35:48 | ERROR | Ошибка при upsert: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[ExersiceEntity(exersice_entities)]'. Original exception was: Could not determine join condition between parent/child tables on relationship ExersiceEntity.exersice - there are no foreign keys linking these tables.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify a 'primaryjoin' expression.
+21.09.2025 23:35:52 | INFO | Получили вебхук
+21.09.2025 23:35:52 | INFO | Upsert для User
+21.09.2025 23:35:52 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+21.09.2025 23:35:52 | ERROR | Ошибка при поиске записи по фильтрам {'telegram_id': 804050819}: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[ExersiceEntity(exersice_entities)]'. Original exception was: Could not determine join condition between parent/child tables on relationship ExersiceEntity.exersice - there are no foreign keys linking these tables.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify a 'primaryjoin' expression.
+21.09.2025 23:35:52 | ERROR | Ошибка при upsert: One or more mappers failed to initialize - can't proceed with initialization of other mappers. Triggering mapper: 'Mapper[ExersiceEntity(exersice_entities)]'. Original exception was: Could not determine join condition between parent/child tables on relationship ExersiceEntity.exersice - there are no foreign keys linking these tables.  Ensure that referencing columns are associated with a ForeignKey or ForeignKeyConstraint, or specify a 'primaryjoin' expression.
+21.09.2025 23:35:52 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+21.09.2025 23:35:52 | INFO | Webhook удален
+21.09.2025 23:40:49 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+21.09.2025 23:40:49 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+21.09.2025 23:40:52 | INFO | Получили вебхук
+21.09.2025 23:40:52 | INFO | Upsert для User
+21.09.2025 23:40:52 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+21.09.2025 23:40:53 | INFO | Запись не найдена по фильтрам: {'telegram_id': 804050819}
+21.09.2025 23:40:53 | INFO | Создана новая запись User
+21.09.2025 23:40:53 | WARNING | Новый пользователь: @asprtat [804050819]
+21.09.2025 23:40:53 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+21.09.2025 23:40:53 | INFO | Запись найдена по фильтрам: {'telegram_id': 804050819}
+21.09.2025 23:40:53 | INFO | Обработали вебхук
+21.09.2025 23:41:01 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+21.09.2025 23:41:01 | INFO | Webhook удален
+21.09.2025 23:58:49 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+21.09.2025 23:58:49 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+21.09.2025 23:58:51 | INFO | Получили вебхук
+21.09.2025 23:58:51 | INFO | Upsert для User
+21.09.2025 23:58:51 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+21.09.2025 23:58:51 | INFO | Запись не найдена по фильтрам: {'telegram_id': 804050819}
+21.09.2025 23:58:51 | INFO | Создана новая запись User
+21.09.2025 23:58:51 | WARNING | Новый пользователь: @asprtat [804050819]
+21.09.2025 23:58:51 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+21.09.2025 23:58:51 | INFO | Запись найдена по фильтрам: {'telegram_id': 804050819}
+21.09.2025 23:58:52 | INFO | Обработали вебхук
+21.09.2025 23:58:58 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+21.09.2025 23:58:58 | INFO | Webhook удален
+22.09.2025 00:05:46 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 00:05:46 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 00:07:26 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 00:07:26 | INFO | Webhook удален
+22.09.2025 00:08:09 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 00:08:09 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 00:08:42 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 00:08:42 | INFO | Webhook удален
+22.09.2025 00:09:32 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 00:09:32 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 00:10:24 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 00:10:24 | INFO | Webhook удален
+22.09.2025 00:10:26 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 00:10:26 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 00:10:30 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 22)}
+22.09.2025 00:10:30 | INFO | Запись не найдена по фильтрам: {'date': datetime.date(2025, 9, 22)}
+22.09.2025 00:10:34 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 00:10:34 | INFO | Webhook удален
+22.09.2025 00:20:05 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 00:20:05 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 00:20:11 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 00:20:11 | INFO | Webhook удален
+22.09.2025 00:20:44 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 00:20:44 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 00:21:32 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 00:21:32 | INFO | Webhook удален
+22.09.2025 00:22:25 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 00:22:25 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 00:22:34 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 00:22:34 | INFO | Webhook удален
+22.09.2025 00:23:14 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 00:23:14 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 00:23:36 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 00:23:36 | INFO | Webhook удален
+22.09.2025 00:26:18 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 00:26:18 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 00:26:23 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 00:26:23 | INFO | Webhook удален
+22.09.2025 00:26:46 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 00:26:46 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 00:26:50 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 00:26:50 | INFO | Webhook удален
+22.09.2025 00:27:03 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 00:27:03 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 00:27:07 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 00:27:07 | INFO | Webhook удален
+22.09.2025 00:28:03 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 00:28:03 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 00:28:05 | INFO | Upsert для User
+22.09.2025 00:28:05 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+22.09.2025 00:28:05 | INFO | Запись найдена по фильтрам: {'telegram_id': 804050819}
+22.09.2025 00:28:05 | INFO | Обновлена существующая запись User
+22.09.2025 00:28:05 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+22.09.2025 00:28:05 | INFO | Запись найдена по фильтрам: {'telegram_id': 804050819}
+22.09.2025 00:28:20 | INFO | Upsert для User
+22.09.2025 00:28:20 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 8150876134}
+22.09.2025 00:28:20 | INFO | Запись не найдена по фильтрам: {'telegram_id': 8150876134}
+22.09.2025 00:28:20 | INFO | Создана новая запись User
+22.09.2025 00:28:20 | WARNING | Новый пользователь: @need2cook [8150876134]
+22.09.2025 00:28:20 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 8150876134}
+22.09.2025 00:28:20 | INFO | Запись найдена по фильтрам: {'telegram_id': 8150876134}
+22.09.2025 00:28:27 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 00:28:27 | INFO | Webhook удален
+22.09.2025 00:28:47 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 00:28:48 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 00:28:49 | INFO | Upsert для User
+22.09.2025 00:28:49 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+22.09.2025 00:28:49 | INFO | Запись найдена по фильтрам: {'telegram_id': 804050819}
+22.09.2025 00:28:49 | INFO | Обновлена существующая запись User
+22.09.2025 00:28:49 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+22.09.2025 00:28:49 | INFO | Запись найдена по фильтрам: {'telegram_id': 804050819}
+22.09.2025 00:29:51 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 1}
+22.09.2025 00:29:51 | INFO | Запись не найдена по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 1}
+22.09.2025 00:30:11 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 00:30:11 | INFO | Webhook удален
+22.09.2025 00:51:35 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 00:51:36 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 00:51:42 | INFO | Upsert для User
+22.09.2025 00:51:42 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+22.09.2025 00:51:42 | INFO | Запись не найдена по фильтрам: {'telegram_id': 804050819}
+22.09.2025 00:51:42 | INFO | Создана новая запись User
+22.09.2025 00:51:42 | WARNING | Новый пользователь: @asprtat [804050819]
+22.09.2025 00:51:47 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 00:51:47 | INFO | Webhook удален
+22.09.2025 00:52:22 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 00:52:22 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 00:52:26 | INFO | Upsert для User
+22.09.2025 00:52:26 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+22.09.2025 00:52:26 | INFO | Запись не найдена по фильтрам: {'telegram_id': 804050819}
+22.09.2025 00:52:26 | INFO | Создана новая запись User
+22.09.2025 00:52:26 | WARNING | Новый пользователь: @asprtat [804050819]
+22.09.2025 00:52:26 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+22.09.2025 00:52:26 | INFO | Запись найдена по фильтрам: {'telegram_id': 804050819}
+22.09.2025 00:52:26 | INFO | Добавление записи Diary с параметрами: {'id': 4}
+22.09.2025 00:52:26 | INFO | Запись Diary успешно добавлена.
+22.09.2025 00:52:26 | INFO | Добавление записи Day с параметрами: {'diary_id': <app.db.models.models.Diary object at 0x116e9cb50>, 'user_id': 4}
+22.09.2025 00:52:26 | ERROR | Ошибка при добавлении записи: (sqlalchemy.dialects.postgresql.asyncpg.Error) <class 'asyncpg.exceptions.DataError'>: invalid input for query argument $1: <app.db.models.models.Diary object at 0x... ('Diary' object cannot be interpreted as an integer)
+[SQL: INSERT INTO days (diary_id, user_id, date) VALUES ($1::INTEGER, $2::INTEGER, $3::DATE) RETURNING days.id]
+[parameters: (<app.db.models.models.Diary object at 0x116e9cb50>, 4, None)]
+(Background on this error at: https://sqlalche.me/e/20/dbapi)
+22.09.2025 00:52:31 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 00:52:31 | INFO | Webhook удален
+22.09.2025 00:53:01 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 00:53:01 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 00:53:04 | INFO | Upsert для User
+22.09.2025 00:53:04 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+22.09.2025 00:53:04 | INFO | Запись не найдена по фильтрам: {'telegram_id': 804050819}
+22.09.2025 00:53:04 | INFO | Создана новая запись User
+22.09.2025 00:53:04 | WARNING | Новый пользователь: @asprtat [804050819]
+22.09.2025 00:53:04 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+22.09.2025 00:53:04 | INFO | Запись найдена по фильтрам: {'telegram_id': 804050819}
+22.09.2025 00:53:04 | INFO | Добавление записи Diary с параметрами: {'id': 5}
+22.09.2025 00:53:04 | INFO | Запись Diary успешно добавлена.
+22.09.2025 00:53:04 | INFO | Добавление записи Day с параметрами: {'diary_id': 5, 'user_id': 5}
+22.09.2025 00:53:04 | ERROR | Ошибка при добавлении записи: (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.NotNullViolationError'>: null value in column "date" of relation "days" violates not-null constraint
+DETAIL:  Failing row contains (1, 5, 5, null).
+[SQL: INSERT INTO days (diary_id, user_id, date) VALUES ($1::INTEGER, $2::INTEGER, $3::DATE) RETURNING days.id]
+[parameters: (5, 5, None)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+22.09.2025 00:53:07 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 00:53:07 | INFO | Webhook удален
+22.09.2025 00:54:25 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 00:54:25 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 00:54:27 | INFO | Upsert для User
+22.09.2025 00:54:27 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+22.09.2025 00:54:27 | INFO | Запись не найдена по фильтрам: {'telegram_id': 804050819}
+22.09.2025 00:54:27 | INFO | Создана новая запись User
+22.09.2025 00:54:27 | WARNING | Новый пользователь: @asprtat [804050819]
+22.09.2025 00:54:27 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+22.09.2025 00:54:27 | INFO | Запись найдена по фильтрам: {'telegram_id': 804050819}
+22.09.2025 00:54:27 | INFO | Добавление записи Diary с параметрами: {'id': 6}
+22.09.2025 00:54:27 | INFO | Запись Diary успешно добавлена.
+22.09.2025 00:54:27 | INFO | Добавление записи Day с параметрами: {'diary_id': 6, 'user_id': 6, 'date': datetime.date(2025, 9, 22)}
+22.09.2025 00:54:27 | INFO | Запись Day успешно добавлена.
+22.09.2025 00:54:29 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 00:54:29 | INFO | Webhook удален
+22.09.2025 00:57:32 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 00:57:32 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 00:57:52 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 00:57:52 | INFO | Запись найдена по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 00:58:10 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 00:58:10 | INFO | Webhook удален
+22.09.2025 00:58:51 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 00:58:51 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 00:59:22 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 00:59:22 | INFO | Запись найдена по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 00:59:28 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 00:59:28 | INFO | Webhook удален
+22.09.2025 00:59:33 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 00:59:33 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 00:59:51 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 20), 'user_id': 6}
+22.09.2025 00:59:51 | INFO | Запись не найдена по фильтрам: {'date': datetime.date(2025, 9, 20), 'user_id': 6}
+22.09.2025 00:59:51 | INFO | Добавление записи Day с параметрами: {'diary_id': 6, 'user_id': 6, 'date': datetime.date(2025, 9, 20)}
+22.09.2025 00:59:51 | INFO | Запись Day успешно добавлена.
+22.09.2025 00:59:51 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 20), 'user_id': 6}
+22.09.2025 00:59:51 | INFO | Запись найдена по фильтрам: {'date': datetime.date(2025, 9, 20), 'user_id': 6}
+22.09.2025 01:00:04 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 01:00:04 | INFO | Webhook удален
+22.09.2025 01:00:25 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 01:00:25 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 01:00:26 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 20), 'user_id': 6}
+22.09.2025 01:00:27 | INFO | Запись не найдена по фильтрам: {'date': datetime.date(2025, 9, 20), 'user_id': 6}
+22.09.2025 01:00:27 | INFO | Добавление записи Day с параметрами: {'diary_id': 6, 'user_id': 6, 'date': datetime.date(2025, 9, 20)}
+22.09.2025 01:00:27 | INFO | Запись Day успешно добавлена.
+22.09.2025 01:00:27 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 20), 'user_id': 6}
+22.09.2025 01:00:27 | INFO | Запись найдена по фильтрам: {'date': datetime.date(2025, 9, 20), 'user_id': 6}
+22.09.2025 01:00:35 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 01:00:35 | INFO | Запись найдена по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 01:00:44 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 01:00:44 | INFO | Webhook удален
+22.09.2025 01:00:55 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 01:00:55 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 01:00:56 | INFO | Upsert для User
+22.09.2025 01:00:56 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:00:56 | INFO | Запись найдена по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:00:56 | INFO | Обновлена существующая запись User
+22.09.2025 01:00:56 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:00:56 | INFO | Запись найдена по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:01:00 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 01:01:00 | INFO | Webhook удален
+22.09.2025 01:06:09 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 01:06:10 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 01:06:12 | INFO | Upsert для User
+22.09.2025 01:06:12 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:06:12 | INFO | Запись найдена по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:06:12 | INFO | Обновлена существующая запись User
+22.09.2025 01:06:12 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:06:12 | INFO | Запись найдена по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:08:14 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 01:08:14 | INFO | Webhook удален
+22.09.2025 01:08:17 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 01:08:17 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 01:08:21 | INFO | Upsert для User
+22.09.2025 01:08:21 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:08:22 | INFO | Запись найдена по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:08:22 | INFO | Обновлена существующая запись User
+22.09.2025 01:08:22 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:08:22 | INFO | Запись найдена по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:08:25 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 24), 'user_id': 6}
+22.09.2025 01:08:25 | INFO | Запись не найдена по фильтрам: {'date': datetime.date(2025, 9, 24), 'user_id': 6}
+22.09.2025 01:08:25 | INFO | Добавление записи Day с параметрами: {'diary_id': 6, 'user_id': 6, 'date': datetime.date(2025, 9, 24)}
+22.09.2025 01:08:25 | INFO | Запись Day успешно добавлена.
+22.09.2025 01:08:25 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 24), 'user_id': 6}
+22.09.2025 01:08:25 | INFO | Запись найдена по фильтрам: {'date': datetime.date(2025, 9, 24), 'user_id': 6}
+22.09.2025 01:08:45 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 01:08:45 | INFO | Webhook удален
+22.09.2025 01:09:38 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 01:09:38 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 01:09:40 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 01:09:40 | INFO | Запись найдена по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 01:09:44 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 01:09:44 | INFO | Webhook удален
+22.09.2025 01:26:15 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 01:26:15 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 01:26:44 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 01:26:44 | INFO | Webhook удален
+22.09.2025 01:27:15 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 01:27:15 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 01:27:16 | INFO | Добавление записи Product с параметрами: {'title': 'Гречка', 'carbs_100g': 10.0, 'proteins_100g': 10.0, 'fats_100g': 10.0, 'kcal_100g': 100}
+22.09.2025 01:27:16 | INFO | Запись Product успешно добавлена.
+22.09.2025 01:27:59 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 01:27:59 | INFO | Webhook удален
+22.09.2025 01:28:02 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 01:28:02 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 01:28:09 | INFO | Добавление записи Product с параметрами: {'title': 'Гречка', 'carbs_100g': 10.0, 'proteins_100g': 10.0, 'fats_100g': 10.0, 'kcal_100g': 100}
+22.09.2025 01:28:10 | INFO | Запись Product успешно добавлена.
+22.09.2025 01:28:16 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 01:28:16 | INFO | Webhook удален
+22.09.2025 01:28:23 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 01:28:23 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 01:28:24 | INFO | Добавление записи Product с параметрами: {'title': 'Гречка', 'carbs_100g': 10.0, 'proteins_100g': 10.0, 'fats_100g': 10.0, 'kcal_100g': 100}
+22.09.2025 01:28:24 | INFO | Запись Product успешно добавлена.
+22.09.2025 01:28:29 | INFO | Добавление записи Product с параметрами: {'title': 'Гречка', 'carbs_100g': 10.0, 'proteins_100g': 10.0, 'fats_100g': 10.0, 'kcal_100g': 100}
+22.09.2025 01:28:29 | ERROR | Ошибка при добавлении записи: (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.UniqueViolationError'>: duplicate key value violates unique constraint "products_title_key"
+DETAIL:  Key (title)=(Гречка) already exists.
+[SQL: INSERT INTO products (title, carbs_100g, proteins_100g, fats_100g, kcal_100g) VALUES ($1::VARCHAR, $2::NUMERIC(6, 2), $3::NUMERIC(6, 2), $4::NUMERIC(6, 2), $5::INTEGER) RETURNING products.id]
+[parameters: ('Гречка', 10.0, 10.0, 10.0, 100)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+22.09.2025 01:28:40 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 01:28:40 | INFO | Webhook удален
+22.09.2025 01:29:31 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 01:29:32 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 01:29:33 | INFO | Поиск одной записи Product по фильтрам: {'title': 'Гречка'}
+22.09.2025 01:29:33 | INFO | Запись найдена по фильтрам: {'title': 'Гречка'}
+22.09.2025 01:29:44 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 01:29:44 | INFO | Webhook удален
+22.09.2025 01:29:46 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 01:29:47 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 01:29:47 | INFO | Поиск одной записи Product по фильтрам: {'title': 'Гречка'}
+22.09.2025 01:29:47 | INFO | Запись найдена по фильтрам: {'title': 'Гречка'}
+22.09.2025 01:30:01 | INFO | Поиск одной записи Product по фильтрам: {'title': 'Пшено'}
+22.09.2025 01:30:01 | INFO | Запись не найдена по фильтрам: {'title': 'Пшено'}
+22.09.2025 01:30:01 | INFO | Добавление записи Product с параметрами: {'title': 'Пшено', 'carbs_100g': 11.0, 'proteins_100g': 11.0, 'fats_100g': 11.0, 'kcal_100g': 110}
+22.09.2025 01:30:01 | INFO | Запись Product успешно добавлена.
+22.09.2025 01:30:39 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 21), 'user_id': 6}
+22.09.2025 01:30:39 | INFO | Запись не найдена по фильтрам: {'date': datetime.date(2025, 9, 21), 'user_id': 6}
+22.09.2025 01:30:39 | INFO | Добавление записи Day с параметрами: {'diary_id': 6, 'user_id': 6, 'date': datetime.date(2025, 9, 21)}
+22.09.2025 01:30:39 | INFO | Запись Day успешно добавлена.
+22.09.2025 01:30:39 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 21), 'user_id': 6}
+22.09.2025 01:30:39 | INFO | Запись найдена по фильтрам: {'date': datetime.date(2025, 9, 21), 'user_id': 6}
+22.09.2025 01:31:01 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 01:31:01 | INFO | Webhook удален
+22.09.2025 01:31:10 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 01:31:10 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 01:31:21 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 21), 'user_id': 6}
+22.09.2025 01:31:21 | INFO | Запись найдена по фильтрам: {'date': datetime.date(2025, 9, 21), 'user_id': 6}
+22.09.2025 01:31:29 | INFO | Upsert для User
+22.09.2025 01:31:29 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:31:29 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 01:31:29 | INFO | Запись найдена по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:31:29 | INFO | Обновлена существующая запись User
+22.09.2025 01:31:29 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:31:29 | INFO | Запись найдена по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:31:29 | INFO | Запись найдена по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 01:31:50 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 21), 'user_id': 6}
+22.09.2025 01:31:50 | INFO | Запись найдена по фильтрам: {'date': datetime.date(2025, 9, 21), 'user_id': 6}
+22.09.2025 01:32:04 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 01:32:04 | INFO | Webhook удален
+22.09.2025 01:36:18 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 01:36:18 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 01:36:35 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 01:36:35 | INFO | Webhook удален
+22.09.2025 01:36:38 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 01:36:38 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 01:36:39 | INFO | Поиск всех записей Product по фильтрам: {}
+22.09.2025 01:36:39 | INFO | Найдено 2 записей.
+22.09.2025 01:36:44 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 01:36:44 | INFO | Webhook удален
+22.09.2025 01:39:42 | WARNING | 🟢 <b>@nutritrack_test_bot</b> запущен..
+22.09.2025 01:39:42 | INFO | Webhook URL: https://7a73c2fd-afed-4f78-a3df-815ce7ef7e94.tunnel4.com/webhook
+22.09.2025 01:39:44 | INFO | Upsert для User
+22.09.2025 01:39:44 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:39:44 | INFO | Запись найдена по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:39:44 | INFO | Обновлена существующая запись User
+22.09.2025 01:39:44 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:39:44 | INFO | Запись найдена по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:39:44 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 01:39:44 | INFO | Запись найдена по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 01:39:48 | INFO | Поиск всех записей Product по фильтрам: {}
+22.09.2025 01:39:48 | INFO | Найдено 2 записей.
+22.09.2025 01:40:04 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 01:40:04 | INFO | Запись найдена по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 01:40:05 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 01:40:05 | INFO | Запись найдена по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 01:40:13 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 21), 'user_id': 6}
+22.09.2025 01:40:13 | INFO | Запись найдена по фильтрам: {'date': datetime.date(2025, 9, 21), 'user_id': 6}
+22.09.2025 01:40:16 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 01:40:16 | INFO | Запись найдена по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 01:40:35 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 01:40:35 | INFO | Запись найдена по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 01:40:35 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 01:40:35 | INFO | Запись найдена по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 01:40:55 | INFO | Upsert для User
+22.09.2025 01:40:55 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:40:55 | INFO | Запись найдена по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:40:55 | INFO | Обновлена существующая запись User
+22.09.2025 01:40:55 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:40:55 | INFO | Запись найдена по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:40:55 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 01:40:55 | INFO | Запись найдена по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 01:41:09 | INFO | Получили вебхук
+22.09.2025 01:41:09 | INFO | Upsert для User
+22.09.2025 01:41:09 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 8150876134}
+22.09.2025 01:41:09 | INFO | Запись не найдена по фильтрам: {'telegram_id': 8150876134}
+22.09.2025 01:41:09 | INFO | Создана новая запись User
+22.09.2025 01:41:09 | WARNING | Новый пользователь: @need2cook [8150876134]
+22.09.2025 01:41:09 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 8150876134}
+22.09.2025 01:41:09 | INFO | Запись найдена по фильтрам: {'telegram_id': 8150876134}
+22.09.2025 01:41:09 | INFO | Добавление записи Diary с параметрами: {'id': 7}
+22.09.2025 01:41:09 | INFO | Запись Diary успешно добавлена.
+22.09.2025 01:41:09 | INFO | Добавление записи Day с параметрами: {'diary_id': 7, 'user_id': 7, 'date': datetime.date(2025, 9, 22)}
+22.09.2025 01:41:09 | INFO | Запись Day успешно добавлена.
+22.09.2025 01:41:09 | INFO | Обработали вебхук
+22.09.2025 01:41:11 | INFO | Upsert для User
+22.09.2025 01:41:11 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 8150876134}
+22.09.2025 01:41:11 | INFO | Запись найдена по фильтрам: {'telegram_id': 8150876134}
+22.09.2025 01:41:11 | INFO | Обновлена существующая запись User
+22.09.2025 01:41:11 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 8150876134}
+22.09.2025 01:41:11 | INFO | Запись найдена по фильтрам: {'telegram_id': 8150876134}
+22.09.2025 01:41:11 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 7}
+22.09.2025 01:41:11 | INFO | Запись найдена по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 7}
+22.09.2025 01:41:12 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 7}
+22.09.2025 01:41:12 | INFO | Запись найдена по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 7}
+22.09.2025 01:41:13 | INFO | Поиск всех записей Product по фильтрам: {}
+22.09.2025 01:41:13 | INFO | Найдено 2 записей.
+22.09.2025 01:41:16 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 7}
+22.09.2025 01:41:16 | INFO | Запись найдена по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 7}
+22.09.2025 01:41:16 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 7}
+22.09.2025 01:41:16 | INFO | Запись найдена по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 7}
+22.09.2025 01:41:18 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 7}
+22.09.2025 01:41:18 | INFO | Запись найдена по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 7}
+22.09.2025 01:41:26 | INFO | Получили вебхук
+22.09.2025 01:41:26 | INFO | Upsert для User
+22.09.2025 01:41:26 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:41:26 | INFO | Запись найдена по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:41:26 | INFO | Обновлена существующая запись User
+22.09.2025 01:41:26 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:41:26 | INFO | Запись найдена по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:41:26 | INFO | Обработали вебхук
+22.09.2025 01:41:27 | INFO | Upsert для User
+22.09.2025 01:41:27 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:41:27 | INFO | Запись найдена по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:41:27 | INFO | Обновлена существующая запись User
+22.09.2025 01:41:27 | INFO | Поиск одной записи User по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:41:27 | INFO | Запись найдена по фильтрам: {'telegram_id': 804050819}
+22.09.2025 01:41:27 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 01:41:27 | INFO | Запись найдена по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 01:41:28 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 01:41:28 | INFO | Запись найдена по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 01:41:30 | INFO | Поиск всех записей Product по фильтрам: {}
+22.09.2025 01:41:30 | INFO | Найдено 2 записей.
+22.09.2025 01:41:32 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 01:41:32 | INFO | Запись найдена по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 01:41:32 | INFO | Поиск одной записи Day по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 01:41:32 | INFO | Запись найдена по фильтрам: {'date': datetime.date(2025, 9, 22), 'user_id': 6}
+22.09.2025 01:42:29 | WARNING | 🔴 <b>@nutritrack_test_bot</b> остановлен.
+22.09.2025 01:42:29 | INFO | Webhook удален
