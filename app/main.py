@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 
 from app.tg_bot.create_bot import bot, dp, stop_bot, start_bot
 from app.config import settings
-from app.api import api_v1
+from app.api.v1.router import api_v1
 from app.pages.router import router as web_router
 from app.tg_bot.handlers import routers
 
