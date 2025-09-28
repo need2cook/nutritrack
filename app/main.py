@@ -3,16 +3,15 @@ from loguru import logger
 from contextlib import asynccontextmanager
 
 from app.tg_bot.create_bot import bot, dp, stop_bot, start_bot
-from app.config import settings
-from app.api.v1.router import api_v1
-from app.pages.router import router as web_router
+from app.core.config import settings
+from app.api.router import api_v1
+from app.modules.pages.router import router as web_router
 from app.tg_bot.handlers import routers
 
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request
 
 from aiogram.types import Update
-import os
 
 
 @asynccontextmanager
@@ -38,7 +37,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-app.mount('/static', StaticFiles(directory='app/static'), 'static')
+app.mount('/static', StaticFiles(directory='app/modules/pages/static'), 'static')
 
 
 @app.post("/webhook")

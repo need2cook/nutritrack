@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>NutriTrack — День</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --accent: #2ecc71;
+        --bg: #f6f7f9;
+        --card: #ffffff;
+        --text: #111;
+        --muted: #6b7280;
+        --border: #e7e7e7;
+        --danger: #ef4444;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0f1214;
+          --card: #161a1d;
+          --text: #f3f4f6;
+          --muted: #9aa4ad;
+          --border: #262b30;
+        }
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        font-family: system-ui, -apple-system, Arial, sans-serif;
+        margin: 0;
+        padding: 12px;
+        min-height: 100dvh;
+        background: var(--bg);
+        color: var(--text);
+        padding-bottom: calc(12px + env(safe-area-inset-bottom));
+      }
+
+      /* Header */
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 10px 14px;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.03);
+      }
+      .brand__dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 25%, transparent);
+      }
+      .brand__title {
+        font-weight: 800;
+        letter-spacing: 0.2px;
+        color: var(--accent);
+        font-size: 18px;
+      }
+
+      /* Controls */
+      .controls {
+        margin: 12px 0 8px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .controls .field {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 8px 10px;
+      }
+      .controls input[type="date"] {
+        appearance: none;
+        border: none;
+        background: transparent;
+        color: var(--text);
+        font-size: 14px;
+        outline: none;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 12px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: var(--card);
+        color: var(--text);
+        text-decoration: none;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .btn.primary {
+        background: var(--accent);
+        color: #fff;
+        border-color: color-mix(in srgb, var(--accent) 70%, black);
+      }
+      .btn.ghost {
+        background: transparent;
+      }
+      .btn:active {
+        transform: translateY(1px);
+      }
+
+      /* Summary */
+      .summary {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px;
+        margin: 8px 2px 10px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .summary b {
+        display: block;
+        color: var(--text);
+        font-size: 13px;
+      }
+
+      /* Day card */
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        overflow: hidden;
+      }
+      .card__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--border);
+        font-weight: 700;
+      }
+      .card__header-left {
+        display: flex;
+        gap: 10px;
+        align-items: baseline;
+      }
+      .card__header-id {
+        color: var(--muted);
+        font-weight: 600;
+      }
+      .add-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 10px;
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        font-size: 20px;
+        line-height: 0;
+        cursor: pointer;
+      }
+      .add-btn:active {
+        transform: translateY(1px);
+      }
+
+      .card__list {
+        padding: 6px 0;
+      }
+      .item {
+        padding: 12px 14px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 8px;
+        align-items: center;
+      }
+      .item + .item {
+        border-top: 1px solid var(--border);
+      }
+      .item__title {
+        font-weight: 600;
+        line-height: 1.2;
+      }
+      .item__meta {
+        margin-top: 6px;
+        font-size: 12px;
+        color: var(--accent);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+      }
+      .item__kcal {
+        font-weight: 700;
+        min-width: 48px;
+        text-align: right;
+      }
+
+      .empty {
+        padding: 16px;
+        text-align: center;
+        color: var(--muted);
+      }
+      .muted {
+        color: var(--muted);
+      }
+
+      /* Modal */
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.35);
+        display: none;
+        z-index: 50;
+      }
+      .modal {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: flex-end; /* мобильная нижняя sheet */
+        z-index: 51;
+      }
+      .modal__sheet {
+        width: 100%;
+        background: var(--card);
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+        border: 1px solid var(--border);
+        box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.25);
+        padding: 12px;
+        max-height: 80dvh;
+        overflow: auto;
+      }
+      .modal__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        padding: 4px 2px 10px;
+      }
+      .modal__title {
+        font-weight: 800;
+        color: var(--accent);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .date-badge {
+        border: 1px solid var(--border);
+        background: color-mix(in srgb, var(--accent) 10%, var(--card));
+        color: var(--text);
+        border-radius: 10px;
+        padding: 4px 8px;
+        font-size: 12px;
+      }
+      .modal__controls {
+        display: grid;
+        gap: 10px;
+        margin: 8px 0 6px;
+      }
+      .input,
+      .select {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: var(--card);
+        color: var(--text);
+        font-size: 14px;
+        outline: none;
+      }
+      .product-list {
+        margin-top: 6px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        background: var(--card);
+      }
+      .product-item {
+        padding: 10px 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+      }
+      .product-item + .product-item {
+        border-top: 1px solid var(--border);
+      }
+      .product-item.active {
+        background: color-mix(in srgb, var(--accent) 12%, transparent);
+        outline: 2px solid color-mix(in srgb, var(--accent) 60%, transparent);
+      }
+      .product-item__title {
+        font-weight: 600;
+      }
+      .product-item__kcal {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .modal__footer {
+        display: flex;
+        gap: 8px;
+        margin-top: 10px;
+        padding-bottom: 6px;
+      }
+      .error {
+        color: var(--danger);
+        font-size: 13px;
+        margin-top: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="brand" role="banner" aria-label="NutriTrack">
+      <span class="brand__dot" aria-hidden="true"></span>
+      <span class="brand__title">NutriTrack</span>
+    </div>
+
+    <div class="controls">
+      <div class="field">
+        <span class="muted">Дата:</span>
+        <input id="date-input" type="date" />
+      </div>
+      <button id="btn-show" class="btn">Показать</button>
+      <button id="btn-today" class="btn primary">Сегодня</button>
+    </div>
+
+    <div id="summary" class="summary" hidden>
+      <div><span class="muted">Жиры</span><b id="sum-fats">0</b></div>
+      <div><span class="muted">Углев</span><b id="sum-carbs">0</b></div>
+      <div><span class="muted">Белк</span><b id="sum-proteins">0</b></div>
+      <div><span class="muted">Калории</span><b id="sum-kcal">0</b></div>
+    </div>
+
+    <section class="card" id="day-card" hidden>
+      <div class="card__header">
+        <div class="card__header-left">
+          <div id="day-title">День</div>
+          <div class="card__header-id" id="day-id">#—</div>
+        </div>
+        <button id="btn-add" class="add-btn" title="Добавить продукт">+</button>
+      </div>
+      <div class="card__list" id="items"></div>
+    </section>
+
+    <div id="placeholder" class="empty">
+      Выберите дату или нажмите «Сегодня»
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-backdrop" id="modal-backdrop"></div>
+    <div class="modal" id="modal">
+      <div
+        class="modal__sheet"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+      >
+        <div class="modal__header">
+          <div class="modal__title" id="modal-title">
+            ➕ Добавить продукт
+            <span class="date-badge" id="modal-date"></span>
+          </div>
+          <button class="btn ghost" id="btn-close">Закрыть</button>
+        </div>
+
+        <div class="modal__controls">
+          <input
+            id="search"
+            class="input"
+            type="search"
+            placeholder="Поиск продукта…"
+          />
+          <div class="product-list" id="product-list">
+            <div class="empty">Загружаем список продуктов…</div>
+          </div>
+          <input
+            id="grams"
+            class="input"
+            type="number"
+            inputmode="numeric"
+            min="1"
+            step="1"
+            placeholder="Граммы"
+          />
+          <div class="error" id="form-error" hidden></div>
+        </div>
+
+        <div class="modal__footer">
+          <button class="btn" id="btn-cancel">Отмена</button>
+          <button class="btn primary" id="btn-confirm" disabled>
+            Добавить
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ---------- Telegram expand ----------
+      if (window.Telegram?.WebApp) {
+        try {
+          window.Telegram.WebApp.expand();
+        } catch {}
+      }
+
+      // ---------- API config ----------
+      const API_BASE = "/api/v1";
+      const DIARIES = `${API_BASE}/diaries`;
+      const PRODUCTS = `${API_BASE}/products_catalog/`; // в роутере "/" под префиксом → конечный "/"
+
+      function authHeaders(extra = {}) {
+        const initData = window.Telegram?.WebApp?.initData || "";
+        return {
+          ...(extra || {}),
+          "X-Telegram-Init-Data": initData,
+        };
+      }
+
+      async function apiFetch(path, options = {}) {
+        const res = await fetch(path, {
+          ...options,
+          headers: authHeaders({
+            ...(options.headers || {}),
+            "Content-Type":
+              options && options.body
+                ? "application/json"
+                : options.headers?.["Content-Type"] || undefined,
+          }),
+        });
+        return res;
+      }
+
+      // ---------- Helpers ----------
+      const $ = (sel) => document.querySelector(sel);
+      const fmt = (n) =>
+        (Math.round(n * 100) / 100).toString().replace(".", ",");
+
+      function toISODate(d) {
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+        return `${y}-${m}-${day}`;
+      }
+
+      function showPlaceholder(text) {
+        $("#day-card").hidden = true;
+        $("#summary").hidden = true;
+        const ph = $("#placeholder");
+        ph.textContent = text;
+        ph.hidden = false;
+      }
+
+      // ---------- Day rendering (как было) ----------
+      function renderEmptyDay(isoDate) {
+        $("#placeholder").hidden = true;
+        $("#day-card").hidden = false;
+
+        $("#day-title").textContent = new Date(isoDate).toLocaleDateString(
+          "ru-RU",
+          { weekday: "short", day: "2-digit", month: "2-digit" }
+        );
+        $("#day-id").textContent = "#—";
+        $(
+          "#items"
+        ).innerHTML = `<div class="empty">В этот день пока нет записей</div>`;
+
+        $("#summary").hidden = false;
+        $("#sum-kcal").textContent = 0;
+        $("#sum-carbs").textContent = "0";
+        $("#sum-proteins").textContent = "0";
+        $("#sum-fats").textContent = "0";
+      }
+
+      function renderDay(day) {
+        $("#placeholder").hidden = true;
+        $("#day-card").hidden = false;
+
+        $("#day-title").textContent = new Date(day.date).toLocaleDateString(
+          "ru-RU",
+          { weekday: "short", day: "2-digit", month: "2-digit" }
+        );
+        $("#day-id").textContent = `#${day.id ?? "—"}`;
+
+        const list = $("#items");
+        list.innerHTML = "";
+
+        const entries = Array.isArray(day.product_entries)
+          ? day.product_entries
+          : [];
+
+        let sumKcal = 0,
+          sumCarbs = 0,
+          sumProteins = 0,
+          sumFats = 0;
+
+        if (entries.length === 0) {
+          list.innerHTML = `<div class="empty">В этот день пока нет записей</div>`;
+        } else {
+          for (const it of entries) {
+            const p = it.product;
+            const grams = it.grams || 0;
+
+            const kcal = ((p.kcal_100g || 0) * grams) / 100;
+            const carbs = ((Number(p.carbs_100g) || 0) * grams) / 100;
+            const proteins = ((Number(p.proteins_100g) || 0) * grams) / 100;
+            const fats = ((Number(p.fats_100g) || 0) * grams) / 100;
+
+            sumKcal += kcal;
+            sumCarbs += carbs;
+            sumProteins += proteins;
+            sumFats += fats;
+
+            const row = document.createElement("div");
+            row.className = "item";
+            row.innerHTML = `
+              <div>
+                <div class="item__title">${p.title}</div>
+                <div class="item__meta">${grams} г</div>
+              </div>
+              <div class="item__kcal">${Math.round(kcal)}</div>
+            `;
+            list.appendChild(row);
+          }
+        }
+
+        $("#summary").hidden = false;
+        $("#sum-kcal").textContent = Math.round(sumKcal);
+        $("#sum-carbs").textContent = fmt(sumCarbs);
+        $("#sum-proteins").textContent = fmt(sumProteins);
+        $("#sum-fats").textContent = fmt(sumFats);
+      }
+
+      // ---------- API calls под новое API ----------
+      async function fetchDayToday() {
+        const res = await apiFetch(`${DIARIES}/day/today`, { method: "GET" });
+        const data = await res.json().catch(() => ({}));
+        return { ok: res.ok, status: res.status, data };
+      }
+
+      async function fetchDayByISO(iso) {
+        const res = await apiFetch(`${DIARIES}/day/${iso}`, { method: "GET" });
+        const data = await res.json().catch(() => ({}));
+        return { ok: res.ok, status: res.status, data };
+      }
+
+      async function addProductToDay({ product_id, grams, target_date }) {
+        const res = await apiFetch(`${DIARIES}/day`, {
+          method: "POST",
+          body: JSON.stringify({ product_id, grams, target_date }),
+        });
+        const data = await res.json().catch(() => ({}));
+        return { ok: res.ok, status: res.status, data };
+      }
+
+      // каталог продуктов — публичный GET
+      async function fetchProducts() {
+        const res = await apiFetch(PRODUCTS, { method: "GET" });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json().catch(() => []);
+        return Array.isArray(data) ? data : [];
+      }
+
+      // ---------- UI actions ----------
+      async function fetchDayByDate(isoDate) {
+        try {
+          const { ok, status, data } = await fetchDayByISO(isoDate);
+          if (!ok || status === 404 || status === 422) {
+            renderEmptyDay(isoDate);
+            return;
+          }
+          renderDay(data);
+        } catch {
+          renderEmptyDay(isoDate);
+        }
+      }
+
+      async function fetchToday() {
+        const isoToday = toISODate(new Date());
+        try {
+          const { ok, status, data } = await fetchDayToday();
+          if (!ok || status === 404 || status === 422) {
+            $("#date-input").value = isoToday;
+            renderEmptyDay(isoToday);
+            return;
+          }
+          $("#date-input").value = toISODate(new Date(data.date || isoToday));
+          renderDay(data);
+        } catch {
+          $("#date-input").value = isoToday;
+          renderEmptyDay(isoToday);
+        }
+      }
+
+      // ---------- Modal logic (как было) ----------
+      const modal = $("#modal");
+      const backdrop = $("#modal-backdrop");
+      const btnAdd = $("#btn-add");
+      const btnClose = $("#btn-close");
+      const btnCancel = $("#btn-cancel");
+      const btnConfirm = $("#btn-confirm");
+      const inputSearch = $("#search");
+      const listBox = $("#product-list");
+      const inputGrams = $("#grams");
+      const formError = $("#form-error");
+      const modalDate = $("#modal-date");
+
+      let selectedProductId = null;
+      let productsCache = [];
+
+      function openModal() {
+        selectedProductId = null;
+        inputGrams.value = "";
+        formError.hidden = true;
+        formError.textContent = "";
+        modalDate.textContent = $("#date-input").value;
+        btnConfirm.disabled = true;
+
+        backdrop.style.display = "block";
+        modal.style.display = "flex";
+
+        inputSearch.value = "";
+        listBox.innerHTML = `<div class="empty">Загружаем…</div>`;
+
+        loadProductsOnce().then(() => filterAndRenderProducts(""));
+      }
+
+      function closeModal() {
+        modal.style.display = "none";
+        backdrop.style.display = "none";
+      }
+
+      function updateConfirmState() {
+        const grams = parseInt(inputGrams.value, 10);
+        btnConfirm.disabled = !(
+          selectedProductId &&
+          Number.isInteger(grams) &&
+          grams > 0
+        );
+      }
+
+      inputGrams.addEventListener("input", updateConfirmState);
+      inputSearch.addEventListener("input", () =>
+        filterAndRenderProducts(inputSearch.value)
+      );
+
+      btnAdd.addEventListener("click", openModal);
+      btnClose.addEventListener("click", closeModal);
+      btnCancel.addEventListener("click", closeModal);
+      backdrop.addEventListener("click", closeModal);
+
+      btnConfirm.addEventListener("click", async () => {
+        formError.hidden = true;
+        formError.textContent = "";
+
+        const grams = parseInt(inputGrams.value, 10);
+        const product_id = selectedProductId;
+        const target_date = $("#date-input").value;
+
+        if (
+          !product_id ||
+          !Number.isInteger(grams) ||
+          grams <= 0 ||
+          !target_date
+        ) {
+          formError.textContent = "Выбери продукт и укажи граммы > 0";
+          formError.hidden = false;
+          return;
+        }
+
+        btnConfirm.disabled = true;
+
+        try {
+          const { ok, data, status } = await addProductToDay({
+            product_id,
+            grams,
+            target_date,
+          });
+          if (!ok) {
+            const msg = data?.detail || `Ошибка ${status}`;
+            formError.textContent = msg;
+            formError.hidden = false;
+            btnConfirm.disabled = false;
+            return;
+          }
+          // успех — закрываем и перерисовываем день
+          closeModal();
+          await fetchDayByDate(target_date);
+          if (window.Telegram?.WebApp?.HapticFeedback) {
+            try {
+              window.Telegram.WebApp.HapticFeedback.impactOccurred("light");
+            } catch {}
+          }
+        } catch {
+          formError.textContent = "Сеть недоступна";
+          formError.hidden = false;
+          btnConfirm.disabled = false;
+        }
+      });
+
+      async function loadProductsOnce() {
+        if (productsCache.length) return;
+        try {
+          const items = await fetchProducts();
+          productsCache = items;
+          filterAndRenderProducts("");
+        } catch {
+          listBox.innerHTML = `<div class="empty">Сеть недоступна</div>`;
+        }
+      }
+
+      function filterAndRenderProducts(query = "") {
+        const q = (query || "").trim().toLowerCase();
+        const items = q
+          ? productsCache.filter((p) =>
+              (p.title || "").toLowerCase().includes(q)
+            )
+          : productsCache;
+        renderProductsList(items);
+      }
+
+      function renderProductsList(items) {
+        if (!Array.isArray(items) || items.length === 0) {
+          listBox.innerHTML = `<div class="empty">Ничего не найдено</div>`;
+          return;
+        }
+        listBox.innerHTML = "";
+        for (const p of items) {
+          const row = document.createElement("div");
+          row.className = "product-item";
+          row.dataset.id = p.id;
+          row.innerHTML = `
+            <div class="product-item__title">${p.title}</div>
+            <div class="product-item__kcal">${p.kcal_100g ?? 0} ккал/100г</div>
+          `;
+          row.addEventListener("click", () => {
+            selectedProductId = p.id;
+            for (const el of listBox.querySelectorAll(".product-item"))
+              el.classList.remove("active");
+            row.classList.add("active");
+            updateConfirmState();
+          });
+          listBox.appendChild(row);
+        }
+      }
+
+      // ---------- UI wire ----------
+      const dateInput = $("#date-input");
+      const btnShow = $("#btn-show");
+      const btnToday = $("#btn-today");
+
+      dateInput.value = toISODate(new Date());
+      btnShow.addEventListener("click", () => {
+        const v = dateInput.value;
+        if (v) fetchDayByDate(v);
+      });
+      btnToday.addEventListener("click", () => fetchToday());
+      fetchToday();
+    </script>
+  </body>
+</html>

@@ -3,9 +3,9 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
 from app.tg_bot.logger import init_logger
-from app.config import settings
+from app.core.config import settings
 from app.tg_bot.middlewares import TrackAllUsersMiddleware, DbSessionMiddleware
-from app.db.database import async_session_maker
+from app.core.db import async_session_maker
 
 from loguru import logger
 

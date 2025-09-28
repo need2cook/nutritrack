@@ -20,3 +20,5 @@ DETAIL:  Key (title)=(Гречка) already exists.
 [SQL: INSERT INTO products (title, carbs_100g, proteins_100g, fats_100g, kcal_100g) VALUES ($1::VARCHAR, $2::NUMERIC(6, 2), $3::NUMERIC(6, 2), $4::NUMERIC(6, 2), $5::INTEGER) RETURNING products.id]
 [parameters: ('Гречка', 10.0, 10.0, 10.0, 100)]
 (Background on this error at: https://sqlalche.me/e/20/gkpj)
+28.09.2025 18:59:40 | ERROR | BaseDAO.add() missing 1 required positional argument: 'session'
+28.09.2025 19:02:01 | ERROR | 'bool' object has no attribute 'grams'

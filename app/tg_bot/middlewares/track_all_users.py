@@ -4,8 +4,8 @@ from aiogram import BaseMiddleware
 from aiogram.types import TelegramObject, Message
 from cachetools import TTLCache
 
-from app.db import UserDAO
-from app.db import async_session_maker
+from app.modules.users import UserDAO
+from app.core.db import async_session_maker
 
 
 class TrackAllUsersMiddleware(BaseMiddleware):

@@ -2,7 +2,7 @@ from loguru import logger
 import asyncio
 import os
 
-from app.config import settings
+from app.core.config import settings
 
 
 
