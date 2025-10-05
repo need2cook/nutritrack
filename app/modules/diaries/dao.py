@@ -58,6 +58,48 @@ class DayDAO(BaseDAO):
             )
             await session.flush()
 
+    @staticmethod
+    async def add_exercise(
+        session: AsyncSession,
+        *,
+        day_id: int,
+        exercise_id: int,
+        minutes: int,
+    ) -> None:
+        from app.modules.exersices_catalog import ExersiceDAO
+
+        exercise = await ExersiceDAO.find_one_or_none(session, id=exercise_id)
+        if not exercise:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Упражнение не найдено.",
+            )
+
+        existing = await ExersiceEntityDAO.find_one_or_none(session, day_id=day_id, exersice_id=exercise_id)
+
+        if existing:
+            # суммируем минуты
+            existing.minutes = int(existing.minutes) + int(minutes)
+            await session.flush()
+            return
+
+        # 3) Создаём новую запись
+        try:
+            await ExersiceEntityDAO.add(
+                session,
+                day_id=day_id,
+                exersice_id=exercise_id,
+                minutes=minutes,
+            )
+        except IntegrityError:
+            await session.rollback()
+            await ExersiceEntityDAO.update(
+                session,
+                filter_by={'day_id': day_id, 'exercise_id': exercise_id},
+                minutes=ExersiceEntity.minutes + minutes
+            )
+            await session.flush()
+
 
 class ProductEntityDAO(BaseDAO):
     model = ProductEntity

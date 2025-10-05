@@ -9,7 +9,7 @@ from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 
-from app.modules.diaries.dao import DayDAO
+from app.modules.diaries.dao import DayDAO, ProductEntityDAO, ExersiceEntityDAO
 
 class DiaryService:
     def __init__(self, session: AsyncSession, tz: str = "Europe/Moscow"):
@@ -69,6 +69,76 @@ class DiaryService:
             await self.session.rollback()
             raise HTTPException(status_code=500, detail="Не удалось получить день.") from e
 
+    async def rm_product_from_day(
+        self,
+        user_id: int, 
+        diary_id: int, 
+        target_date: date, 
+        entry_id: int,
+    ):
+        try:
+            day = await self.get_or_create_day(user_id=user_id, diary_id=diary_id, target_date=target_date)
+            deleted = await ProductEntityDAO.delete(self.session, id=entry_id, day_id=day.id)
+
+            if not deleted:
+                await self.session.rollback()
+                raise HTTPException(
+                    status_code=status.HTTP_409_CONFLICT,
+                    detail="Продукт не был удален.",
+                )
+
+            await self.session.commit()
+        except HTTPException:
+            raise
+        except IntegrityError as e:
+            await self.session.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Конфликт при удалении продукта из дня.",
+            ) from e
+        except SQLAlchemyError as e:
+            await self.session.rollback()
+            raise HTTPException(status_code=500, detail="Ошибка БД при удалении продукта.") from e
+        except Exception as e:
+            logger.error(e)
+            await self.session.rollback()
+            raise HTTPException(status_code=500, detail="Не удалось удалить продукт из дня.") from e
+        
+    async def rm_exercise_from_day(
+        self,
+        user_id: int, 
+        diary_id: int, 
+        target_date: date, 
+        entry_id: int,
+    ):
+        try:
+            day = await self.get_or_create_day(user_id=user_id, diary_id=diary_id, target_date=target_date)
+            deleted = await ExersiceEntityDAO.delete(self.session, id=entry_id, day_id=day.id)
+
+            if not deleted:
+                await self.session.rollback()
+                raise HTTPException(
+                    status_code=status.HTTP_409_CONFLICT,
+                    detail="Упражнение не было удалено.",
+                )
+
+            await self.session.commit()
+        except HTTPException:
+            raise
+        except IntegrityError as e:
+            await self.session.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Конфликт при удалении упражнения из дня.",
+            ) from e
+        except SQLAlchemyError as e:
+            await self.session.rollback()
+            raise HTTPException(status_code=500, detail="Ошибка БД при удалении упражнения.") from e
+        except Exception as e:
+            logger.error(e)
+            await self.session.rollback()
+            raise HTTPException(status_code=500, detail="Не удалось удалить упражнение из дня.") from e
+
     async def add_product_to_day(self, *, user_id: int, diary_id: int, target_date: date, product_id: int, grams: float):
         try:
             day = await self.get_or_create_day(user_id=user_id, diary_id=diary_id, target_date=target_date)
@@ -94,3 +164,36 @@ class DiaryService:
             logger.error(e)
             await self.session.rollback()
             raise HTTPException(status_code=500, detail="Не удалось добавить продукт в день.") from e
+        
+    async def add_exercise_to_day(
+        self, 
+        user_id: int,
+        diary_id: int,
+        target_date: date, 
+        exercise_id: int, 
+        minutes: float,
+    ):
+        try:
+            day = await self.get_or_create_day(user_id=user_id, diary_id=diary_id, target_date=target_date)
+            await DayDAO.add_exercise(
+                self.session,
+                day_id=day.id,
+                exercise_id=exercise_id,
+                minutes=minutes,
+            )
+            await self.session.commit()
+        except HTTPException:
+            raise
+        except IntegrityError as e:
+            await self.session.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Конфликт при добавлении упражнения в день.",
+            ) from e
+        except SQLAlchemyError as e:
+            await self.session.rollback()
+            raise HTTPException(status_code=500, detail="Ошибка БД при добавлении упражнения.") from e
+        except Exception as e:
+            logger.error(e)
+            await self.session.rollback()
+            raise HTTPException(status_code=500, detail="Не удалось добавить упражнение в день.") from e

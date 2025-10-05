@@ -1,6 +1,6 @@
 /venv/
 app/.env
-bot/logs/*
+logs/*
 /.env
 .env
 **/__pycache__/

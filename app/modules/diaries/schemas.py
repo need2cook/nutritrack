@@ -11,12 +11,22 @@ class ProductOut(BaseModel):
     fats_100g: float
     kcal_100g: int
 
+class ExerciseOut(BaseModel):
+    id: int
+    title: str
+
+    kcal_30m: int
+
 
 class ProductEntryOut(BaseModel):
     id: int
     product: ProductOut
     grams: int
 
+class ExersiceEntryOut(BaseModel):
+    id: int
+    exersice: ExerciseOut
+    minutes: int
 
 class DayOut(BaseModel):
     id: int
@@ -25,6 +35,7 @@ class DayOut(BaseModel):
     model_config = {"from_attributes": True}
 
     product_entries: list[ProductEntryOut] | None
+    exersice_entries: list[ExersiceEntryOut] | None
 
 
 class AddProductIn(BaseModel):
@@ -50,3 +61,34 @@ class CreateProductIn(BaseModel):
 
 class AddProductOut(BaseModel):
     success: bool
+
+
+class AddExerciseOut(BaseModel):
+    success: bool
+
+
+class DeleteProductIn(BaseModel):
+    target_date: date
+    entry_id: int
+
+
+class DeleteProductOut(BaseModel):
+    success: bool
+
+
+class DeleteExerciseOut(BaseModel):
+    success: bool
+
+
+
+class AddExerciseIn(BaseModel):
+    target_date: date
+    exercise_id: int
+    minutes: int
+
+    @field_validator("minutes")
+    @classmethod
+    def minutes_positive(cls, v: int) -> int:
+        if v <= 0:
+            raise ValueError("Количество минут должно быть > 0")
+        return v

@@ -13,7 +13,7 @@
         color-scheme: light dark;
         --accent: #2ecc71;
         --bg: #f6f7f9;
-        --card: #ffffff;
+        --card: #fff;
         --text: #111;
         --muted: #6b7280;
         --border: #e7e7e7;
@@ -41,8 +41,6 @@
         color: var(--text);
         padding-bottom: calc(12px + env(safe-area-inset-bottom));
       }
-
-      /* Header */
       .brand {
         display: inline-flex;
         align-items: center;
@@ -66,8 +64,6 @@
         color: var(--accent);
         font-size: 18px;
       }
-
-      /* Controls */
       .controls {
         margin: 12px 0 8px;
         display: flex;
@@ -115,8 +111,6 @@
       .btn:active {
         transform: translateY(1px);
       }
-
-      /* Summary */
       .summary {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -130,14 +124,13 @@
         color: var(--text);
         font-size: 13px;
       }
-
-      /* Day card */
       .card {
         background: var(--card);
         border: 1px solid var(--border);
         border-radius: 14px;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
         overflow: hidden;
+        margin-top: 10px;
       }
       .card__header {
         display: flex;
@@ -173,14 +166,13 @@
       .add-btn:active {
         transform: translateY(1px);
       }
-
       .card__list {
         padding: 6px 0;
       }
       .item {
         padding: 12px 14px;
         display: grid;
-        grid-template-columns: 1fr auto;
+        grid-template-columns: 1fr auto auto;
         gap: 8px;
         align-items: center;
       }
@@ -203,7 +195,13 @@
         min-width: 48px;
         text-align: right;
       }
-
+      .item__del {
+        border: none;
+        background: transparent;
+        color: var(--danger);
+        font-size: 18px;
+        cursor: pointer;
+      }
       .empty {
         padding: 16px;
         text-align: center;
@@ -212,8 +210,6 @@
       .muted {
         color: var(--muted);
       }
-
-      /* Modal */
       .modal-backdrop {
         position: fixed;
         inset: 0;
@@ -225,7 +221,7 @@
         position: fixed;
         inset: 0;
         display: none;
-        align-items: flex-end; /* мобильная нижняя sheet */
+        align-items: flex-end;
         z-index: 51;
       }
       .modal__sheet {
@@ -277,31 +273,37 @@
         font-size: 14px;
         outline: none;
       }
-      .product-list {
+      .product-list,
+      .exercise-list {
         margin-top: 6px;
         border: 1px solid var(--border);
         border-radius: 12px;
         overflow: hidden;
         background: var(--card);
       }
-      .product-item {
+      .product-item,
+      .exercise-item {
         padding: 10px 12px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         cursor: pointer;
       }
-      .product-item + .product-item {
+      .product-item + .product-item,
+      .exercise-item + .exercise-item {
         border-top: 1px solid var(--border);
       }
-      .product-item.active {
+      .product-item.active,
+      .exercise-item.active {
         background: color-mix(in srgb, var(--accent) 12%, transparent);
         outline: 2px solid color-mix(in srgb, var(--accent) 60%, transparent);
       }
-      .product-item__title {
+      .product-item__title,
+      .exercise-item__title {
         font-weight: 600;
       }
-      .product-item__kcal {
+      .product-item__kcal,
+      .exercise-item__kcal {
         font-size: 12px;
         color: var(--muted);
       }
@@ -316,18 +318,22 @@
         font-size: 13px;
         margin-top: 6px;
       }
+      .row-actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
     </style>
   </head>
   <body>
-    <div class="brand" role="banner" aria-label="NutriTrack">
-      <span class="brand__dot" aria-hidden="true"></span>
-      <span class="brand__title">NutriTrack</span>
+    <div class="brand">
+      <span class="brand__dot"></span
+      ><span class="brand__title">NutriTrack</span>
     </div>
 
     <div class="controls">
       <div class="field">
-        <span class="muted">Дата:</span>
-        <input id="date-input" type="date" />
+        <span class="muted">Дата:</span><input id="date-input" type="date" />
       </div>
       <button id="btn-show" class="btn">Показать</button>
       <button id="btn-today" class="btn primary">Сегодня</button>
@@ -340,6 +346,7 @@
       <div><span class="muted">Калории</span><b id="sum-kcal">0</b></div>
     </div>
 
+    <!-- Продукты -->
     <section class="card" id="day-card" hidden>
       <div class="card__header">
         <div class="card__header-left">
@@ -351,11 +358,22 @@
       <div class="card__list" id="items"></div>
     </section>
 
+    <!-- Упражнения -->
+    <section class="card" id="ex-card" hidden>
+      <div class="card__header">
+        <div class="card__header-left"><div>Упражнения</div></div>
+        <button id="btn-add-ex" class="add-btn" title="Добавить упражнение">
+          +
+        </button>
+      </div>
+      <div class="card__list" id="ex-items"></div>
+    </section>
+
     <div id="placeholder" class="empty">
       Выберите дату или нажмите «Сегодня»
     </div>
 
-    <!-- Modal -->
+    <!-- Modal PRODUCT -->
     <div class="modal-backdrop" id="modal-backdrop"></div>
     <div class="modal" id="modal">
       <div
@@ -366,12 +384,10 @@
       >
         <div class="modal__header">
           <div class="modal__title" id="modal-title">
-            ➕ Добавить продукт
-            <span class="date-badge" id="modal-date"></span>
+            ➕ Добавить продукт <span class="date-badge" id="modal-date"></span>
           </div>
           <button class="btn ghost" id="btn-close">Закрыть</button>
         </div>
-
         <div class="modal__controls">
           <input
             id="search"
@@ -393,7 +409,6 @@
           />
           <div class="error" id="form-error" hidden></div>
         </div>
-
         <div class="modal__footer">
           <button class="btn" id="btn-cancel">Отмена</button>
           <button class="btn primary" id="btn-confirm" disabled>
@@ -403,32 +418,74 @@
       </div>
     </div>
 
+    <!-- Modal EXERCISE -->
+    <div class="modal-backdrop" id="ex-backdrop"></div>
+    <div class="modal" id="ex-modal">
+      <div
+        class="modal__sheet"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="ex-title"
+      >
+        <div class="modal__header">
+          <div class="modal__title" id="ex-title">
+            ➕ Добавить упражнение <span class="date-badge" id="ex-date"></span>
+          </div>
+          <button class="btn ghost" id="ex-close">Закрыть</button>
+        </div>
+        <div class="modal__controls">
+          <input
+            id="ex-search"
+            class="input"
+            type="search"
+            placeholder="Поиск упражнения…"
+          />
+          <div class="exercise-list" id="exercise-list">
+            <div class="empty">Загружаем список упражнений…</div>
+          </div>
+          <input
+            id="minutes"
+            class="input"
+            type="number"
+            inputmode="numeric"
+            min="1"
+            step="1"
+            placeholder="Минуты"
+          />
+          <div class="error" id="ex-error" hidden></div>
+        </div>
+        <div class="modal__footer">
+          <button class="btn" id="ex-cancel">Отмена</button>
+          <button class="btn primary" id="ex-confirm" disabled>Добавить</button>
+        </div>
+      </div>
+    </div>
+
     <script>
-      // ---------- Telegram expand ----------
       if (window.Telegram?.WebApp) {
         try {
           window.Telegram.WebApp.expand();
         } catch {}
       }
 
-      // ---------- API config ----------
       const API_BASE = "/api/v1";
       const DIARIES = `${API_BASE}/diaries`;
-      const PRODUCTS = `${API_BASE}/products_catalog/`; // в роутере "/" под префиксом → конечный "/"
+      const PRODUCTS = `${API_BASE}/products_catalog/`;
+      const EXERCISES = `${API_BASE}/exercises_catalog/`;
 
       function authHeaders(extra = {}) {
         const initData = window.Telegram?.WebApp?.initData || "";
-        return {
-          ...(extra || {}),
-          "X-Telegram-Init-Data": initData,
-        };
+        return { ...(extra || {}), "X-Telegram-Init-Data": initData };
       }
-
       async function apiFetch(path, options = {}) {
         const res = await fetch(path, {
+          cache: "no-store", // <- не кэшируем
+          credentials: "same-origin",
           ...options,
           headers: authHeaders({
             ...(options.headers || {}),
+            "Cache-Control": "no-cache",
+            Pragma: "no-cache",
             "Content-Type":
               options && options.body
                 ? "application/json"
@@ -438,31 +495,83 @@
         return res;
       }
 
-      // ---------- Helpers ----------
-      const $ = (sel) => document.querySelector(sel);
+      const $ = (s) => document.querySelector(s);
       const fmt = (n) =>
         (Math.round(n * 100) / 100).toString().replace(".", ",");
+      const toISODate = (d) =>
+        `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
+          2,
+          "0"
+        )}-${String(d.getDate()).padStart(2, "0")}`;
 
-      function toISODate(d) {
-        const y = d.getFullYear();
-        const m = String(d.getMonth() + 1).padStart(2, "0");
-        const day = String(d.getDate()).padStart(2, "0");
-        return `${y}-${m}-${day}`;
-      }
-
-      function showPlaceholder(text) {
+      function showPlaceholder(t) {
         $("#day-card").hidden = true;
+        $("#ex-card").hidden = true;
         $("#summary").hidden = true;
         const ph = $("#placeholder");
-        ph.textContent = text;
+        ph.textContent = t;
         ph.hidden = false;
       }
 
-      // ---------- Day rendering (как было) ----------
+      // API
+      async function fetchDayToday() {
+        const r = await apiFetch(`${DIARIES}/day/today`, { method: "GET" });
+        const d = await r.json().catch(() => ({}));
+        return { ok: r.ok, status: r.status, data: d };
+      }
+      async function fetchDayByISO(iso) {
+        const r = await apiFetch(`${DIARIES}/day/${iso}`, { method: "GET" });
+        const d = await r.json().catch(() => ({}));
+        return { ok: r.ok, status: r.status, data: d };
+      }
+      async function addProductToDay({ product_id, grams, target_date }) {
+        const r = await apiFetch(`${DIARIES}/day/product`, {
+          method: "POST",
+          body: JSON.stringify({ product_id, grams, target_date }),
+        });
+        const d = await r.json().catch(() => ({}));
+        return { ok: r.ok, status: r.status, data: d };
+      }
+      async function deleteProductEntry(target_date, entry_id) {
+        const r = await apiFetch(
+          `${DIARIES}/day/${target_date}/product/${entry_id}`,
+          { method: "DELETE" }
+        );
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      }
+      async function addExerciseToDay({ exercise_id, minutes, target_date }) {
+        const r = await apiFetch(`${DIARIES}/day/exercise`, {
+          method: "POST",
+          body: JSON.stringify({ exercise_id, minutes, target_date }),
+        });
+        const d = await r.json().catch(() => ({}));
+        return { ok: r.ok, status: r.status, data: d };
+      }
+      async function deleteExerciseEntry(target_date, entry_id) {
+        const r = await apiFetch(
+          `${DIARIES}/day/${target_date}/exercise/${entry_id}`,
+          { method: "DELETE" }
+        );
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      }
+      async function fetchProducts() {
+        const r = await apiFetch(PRODUCTS, { method: "GET" });
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        const d = await r.json().catch(() => []);
+        return Array.isArray(d) ? d : [];
+      }
+      async function fetchExercises() {
+        const r = await apiFetch(EXERCISES, { method: "GET" });
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        const d = await r.json().catch(() => []);
+        return Array.isArray(d) ? d : [];
+      }
+
+      // Рендер
       function renderEmptyDay(isoDate) {
         $("#placeholder").hidden = true;
         $("#day-card").hidden = false;
-
+        $("#ex-card").hidden = false;
         $("#day-title").textContent = new Date(isoDate).toLocaleDateString(
           "ru-RU",
           { weekday: "short", day: "2-digit", month: "2-digit" }
@@ -471,7 +580,9 @@
         $(
           "#items"
         ).innerHTML = `<div class="empty">В этот день пока нет записей</div>`;
-
+        $(
+          "#ex-items"
+        ).innerHTML = `<div class="empty">Пока нет упражнений</div>`;
         $("#summary").hidden = false;
         $("#sum-kcal").textContent = 0;
         $("#sum-carbs").textContent = "0";
@@ -482,20 +593,19 @@
       function renderDay(day) {
         $("#placeholder").hidden = true;
         $("#day-card").hidden = false;
-
+        $("#ex-card").hidden = false;
         $("#day-title").textContent = new Date(day.date).toLocaleDateString(
           "ru-RU",
           { weekday: "short", day: "2-digit", month: "2-digit" }
         );
         $("#day-id").textContent = `#${day.id ?? "—"}`;
 
+        // PRODUCTS
         const list = $("#items");
         list.innerHTML = "";
-
         const entries = Array.isArray(day.product_entries)
           ? day.product_entries
           : [];
-
         let sumKcal = 0,
           sumCarbs = 0,
           sumProteins = 0,
@@ -507,12 +617,10 @@
           for (const it of entries) {
             const p = it.product;
             const grams = it.grams || 0;
-
             const kcal = ((p.kcal_100g || 0) * grams) / 100;
             const carbs = ((Number(p.carbs_100g) || 0) * grams) / 100;
             const proteins = ((Number(p.proteins_100g) || 0) * grams) / 100;
             const fats = ((Number(p.fats_100g) || 0) * grams) / 100;
-
             sumKcal += kcal;
             sumCarbs += carbs;
             sumProteins += proteins;
@@ -526,7 +634,17 @@
                 <div class="item__meta">${grams} г</div>
               </div>
               <div class="item__kcal">${Math.round(kcal)}</div>
+              <div class="row-actions"><button class="item__del" title="Удалить">✕</button></div>
             `;
+            row
+              .querySelector(".item__del")
+              .addEventListener("click", async () => {
+                try {
+                  const iso = $("#date-input").value;
+                  await deleteProductEntry(iso, it.id);
+                  await fetchDayByDate(iso);
+                } catch {}
+              });
             list.appendChild(row);
           }
         }
@@ -536,39 +654,45 @@
         $("#sum-carbs").textContent = fmt(sumCarbs);
         $("#sum-proteins").textContent = fmt(sumProteins);
         $("#sum-fats").textContent = fmt(sumFats);
+
+        // EXERCISES (твое поле: exersice_entries)
+        const exList = $("#ex-items");
+        exList.innerHTML = "";
+        const exEntries = Array.isArray(day.exersice_entries)
+          ? day.exersice_entries
+          : [];
+        if (exEntries.length === 0) {
+          exList.innerHTML = `<div class="empty">Пока нет упражнений</div>`;
+        } else {
+          for (const e of exEntries) {
+            const ex = e.exercise;
+            const minutes = e.minutes || 0;
+            const kcalPerMin = (Number(ex.kcal_30m) || 0) / 30;
+            const kcal = Math.round(kcalPerMin * minutes);
+            const row = document.createElement("div");
+            row.className = "item";
+            row.innerHTML = `
+              <div>
+                <div class="item__title">${ex.title}</div>
+                <div class="item__meta">${minutes} мин</div>
+              </div>
+              <div class="item__kcal">-${kcal}</div>
+              <div class="row-actions"><button class="item__del" title="Удалить">✕</button></div>
+            `;
+            row
+              .querySelector(".item__del")
+              .addEventListener("click", async () => {
+                try {
+                  const iso = $("#date-input").value;
+                  await deleteExerciseEntry(iso, e.id);
+                  await fetchDayByDate(iso);
+                } catch {}
+              });
+            exList.appendChild(row);
+          }
+        }
       }
 
-      // ---------- API calls под новое API ----------
-      async function fetchDayToday() {
-        const res = await apiFetch(`${DIARIES}/day/today`, { method: "GET" });
-        const data = await res.json().catch(() => ({}));
-        return { ok: res.ok, status: res.status, data };
-      }
-
-      async function fetchDayByISO(iso) {
-        const res = await apiFetch(`${DIARIES}/day/${iso}`, { method: "GET" });
-        const data = await res.json().catch(() => ({}));
-        return { ok: res.ok, status: res.status, data };
-      }
-
-      async function addProductToDay({ product_id, grams, target_date }) {
-        const res = await apiFetch(`${DIARIES}/day`, {
-          method: "POST",
-          body: JSON.stringify({ product_id, grams, target_date }),
-        });
-        const data = await res.json().catch(() => ({}));
-        return { ok: res.ok, status: res.status, data };
-      }
-
-      // каталог продуктов — публичный GET
-      async function fetchProducts() {
-        const res = await apiFetch(PRODUCTS, { method: "GET" });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json().catch(() => []);
-        return Array.isArray(data) ? data : [];
-      }
-
-      // ---------- UI actions ----------
       async function fetchDayByDate(isoDate) {
         try {
           const { ok, status, data } = await fetchDayByISO(isoDate);
@@ -581,7 +705,6 @@
           renderEmptyDay(isoDate);
         }
       }
-
       async function fetchToday() {
         const isoToday = toISODate(new Date());
         try {
@@ -599,21 +722,20 @@
         }
       }
 
-      // ---------- Modal logic (как было) ----------
-      const modal = $("#modal");
-      const backdrop = $("#modal-backdrop");
-      const btnAdd = $("#btn-add");
-      const btnClose = $("#btn-close");
-      const btnCancel = $("#btn-cancel");
-      const btnConfirm = $("#btn-confirm");
-      const inputSearch = $("#search");
-      const listBox = $("#product-list");
-      const inputGrams = $("#grams");
-      const formError = $("#form-error");
-      const modalDate = $("#modal-date");
-
-      let selectedProductId = null;
-      let productsCache = [];
+      // PRODUCT MODAL
+      const modal = $("#modal"),
+        backdrop = $("#modal-backdrop");
+      const btnAdd = $("#btn-add"),
+        btnClose = $("#btn-close"),
+        btnCancel = $("#btn-cancel"),
+        btnConfirm = $("#btn-confirm");
+      const inputSearch = $("#search"),
+        listBox = $("#product-list"),
+        inputGrams = $("#grams");
+      const formError = $("#form-error"),
+        modalDate = $("#modal-date");
+      let selectedProductId = null,
+        productsCache = [];
 
       function openModal() {
         selectedProductId = null;
@@ -622,35 +744,28 @@
         formError.textContent = "";
         modalDate.textContent = $("#date-input").value;
         btnConfirm.disabled = true;
-
         backdrop.style.display = "block";
         modal.style.display = "flex";
-
         inputSearch.value = "";
         listBox.innerHTML = `<div class="empty">Загружаем…</div>`;
-
         loadProductsOnce().then(() => filterAndRenderProducts(""));
       }
-
       function closeModal() {
         modal.style.display = "none";
         backdrop.style.display = "none";
       }
-
       function updateConfirmState() {
-        const grams = parseInt(inputGrams.value, 10);
+        const g = parseInt(inputGrams.value, 10);
         btnConfirm.disabled = !(
           selectedProductId &&
-          Number.isInteger(grams) &&
-          grams > 0
+          Number.isInteger(g) &&
+          g > 0
         );
       }
-
       inputGrams.addEventListener("input", updateConfirmState);
       inputSearch.addEventListener("input", () =>
         filterAndRenderProducts(inputSearch.value)
       );
-
       btnAdd.addEventListener("click", openModal);
       btnClose.addEventListener("click", closeModal);
       btnCancel.addEventListener("click", closeModal);
@@ -659,11 +774,9 @@
       btnConfirm.addEventListener("click", async () => {
         formError.hidden = true;
         formError.textContent = "";
-
         const grams = parseInt(inputGrams.value, 10);
         const product_id = selectedProductId;
         const target_date = $("#date-input").value;
-
         if (
           !product_id ||
           !Number.isInteger(grams) ||
@@ -674,9 +787,7 @@
           formError.hidden = false;
           return;
         }
-
         btnConfirm.disabled = true;
-
         try {
           const { ok, data, status } = await addProductToDay({
             product_id,
@@ -684,15 +795,14 @@
             target_date,
           });
           if (!ok) {
-            const msg = data?.detail || `Ошибка ${status}`;
-            formError.textContent = msg;
+            formError.textContent = data?.detail || `Ошибка ${status}`;
             formError.hidden = false;
             btnConfirm.disabled = false;
             return;
           }
-          // успех — закрываем и перерисовываем день
           closeModal();
-          await fetchDayByDate(target_date);
+          const iso = $("#date-input").value;
+          await fetchDayByDate(iso);
           if (window.Telegram?.WebApp?.HapticFeedback) {
             try {
               window.Telegram.WebApp.HapticFeedback.impactOccurred("light");
@@ -708,16 +818,14 @@
       async function loadProductsOnce() {
         if (productsCache.length) return;
         try {
-          const items = await fetchProducts();
-          productsCache = items;
+          productsCache = await fetchProducts();
           filterAndRenderProducts("");
         } catch {
           listBox.innerHTML = `<div class="empty">Сеть недоступна</div>`;
         }
       }
-
-      function filterAndRenderProducts(query = "") {
-        const q = (query || "").trim().toLowerCase();
+      function filterAndRenderProducts(q = "") {
+        q = (q || "").trim().toLowerCase();
         const items = q
           ? productsCache.filter((p) =>
               (p.title || "").toLowerCase().includes(q)
@@ -725,7 +833,6 @@
           : productsCache;
         renderProductsList(items);
       }
-
       function renderProductsList(items) {
         if (!Array.isArray(items) || items.length === 0) {
           listBox.innerHTML = `<div class="empty">Ничего не найдено</div>`;
@@ -736,10 +843,11 @@
           const row = document.createElement("div");
           row.className = "product-item";
           row.dataset.id = p.id;
-          row.innerHTML = `
-            <div class="product-item__title">${p.title}</div>
-            <div class="product-item__kcal">${p.kcal_100g ?? 0} ккал/100г</div>
-          `;
+          row.innerHTML = `<div class="product-item__title">${
+            p.title
+          }</div><div class="product-item__kcal">${
+            p.kcal_100g ?? 0
+          } ккал/100г</div>`;
           row.addEventListener("click", () => {
             selectedProductId = p.id;
             for (const el of listBox.querySelectorAll(".product-item"))
@@ -751,11 +859,147 @@
         }
       }
 
-      // ---------- UI wire ----------
+      // EXERCISE MODAL
+      const exModal = $("#ex-modal"),
+        exBackdrop = $("#ex-backdrop");
+      const btnAddEx = $("#btn-add-ex"),
+        exClose = $("#ex-close"),
+        exCancel = $("#ex-cancel"),
+        exConfirm = $("#ex-confirm");
+      const exSearch = $("#ex-search"),
+        exListBox = $("#exercise-list"),
+        inputMinutes = $("#minutes");
+      const exError = $("#ex-error"),
+        exDate = $("#ex-date");
+      let selectedExerciseId = null,
+        exercisesCache = [];
+
+      function openExModal() {
+        selectedExerciseId = null;
+        inputMinutes.value = "";
+        exError.hidden = true;
+        exError.textContent = "";
+        exDate.textContent = $("#date-input").value;
+        exConfirm.disabled = true;
+        exBackdrop.style.display = "block";
+        exModal.style.display = "flex";
+        exSearch.value = "";
+        exListBox.innerHTML = `<div class="empty">Загружаем…</div>`;
+        loadExercisesOnce().then(() => filterAndRenderExercises(""));
+      }
+      function closeExModal() {
+        exModal.style.display = "none";
+        exBackdrop.style.display = "none";
+      }
+      function updateExConfirmState() {
+        const m = parseInt(inputMinutes.value, 10);
+        exConfirm.disabled = !(
+          selectedExerciseId &&
+          Number.isInteger(m) &&
+          m > 0
+        );
+      }
+      inputMinutes.addEventListener("input", updateExConfirmState);
+      exSearch.addEventListener("input", () =>
+        filterAndRenderExercises(exSearch.value)
+      );
+      btnAddEx.addEventListener("click", openExModal);
+      exClose.addEventListener("click", closeExModal);
+      exCancel.addEventListener("click", closeExModal);
+      exBackdrop.addEventListener("click", closeExModal);
+
+      exConfirm.addEventListener("click", async () => {
+        exError.hidden = true;
+        exError.textContent = "";
+        const minutes = parseInt(inputMinutes.value, 10);
+        const exercise_id = selectedExerciseId;
+        const target_date = $("#date-input").value;
+        if (
+          !exercise_id ||
+          !Number.isInteger(minutes) ||
+          minutes <= 0 ||
+          !target_date
+        ) {
+          exError.textContent = "Выбери упражнение и укажи минуты > 0";
+          exError.hidden = false;
+          return;
+        }
+        exConfirm.disabled = true;
+        try {
+          const { ok, data, status } = await addExerciseToDay({
+            exercise_id,
+            minutes,
+            target_date,
+          });
+          if (!ok) {
+            exError.textContent = data?.detail || `Ошибка ${status}`;
+            exError.hidden = false;
+            exConfirm.disabled = false;
+            return;
+          }
+          closeExModal();
+          const iso = $("#date-input").value;
+          await fetchDayByDate(iso); // обновляем текущий день
+          if (window.Telegram?.WebApp?.HapticFeedback) {
+            try {
+              window.Telegram.WebApp.HapticFeedback.impactOccurred("light");
+            } catch {}
+          }
+        } catch {
+          exError.textContent = "Сеть недоступна";
+          exError.hidden = false;
+          exConfirm.disabled = false;
+        }
+      });
+
+      async function loadExercisesOnce() {
+        if (exercisesCache.length) return;
+        try {
+          exercisesCache = await fetchExercises();
+          filterAndRenderExercises("");
+        } catch {
+          exListBox.innerHTML = `<div class="empty">Сеть недоступна</div>`;
+        }
+      }
+      function filterAndRenderExercises(q = "") {
+        q = (q || "").trim().toLowerCase();
+        const items = q
+          ? exercisesCache.filter((e) =>
+              (e.title || "").toLowerCase().includes(q)
+            )
+          : exercisesCache;
+        renderExercisesList(items);
+      }
+      function renderExercisesList(items) {
+        if (!Array.isArray(items) || items.length === 0) {
+          exListBox.innerHTML = `<div class="empty">Ничего не найдено</div>`;
+          return;
+        }
+        exListBox.innerHTML = "";
+        for (const ex of items) {
+          const row = document.createElement("div");
+          row.className = "exercise-item";
+          row.dataset.id = ex.id;
+          row.innerHTML = `<div class="exercise-item__title">${
+            ex.title
+          }</div><div class="exercise-item__kcal">${
+            ex.kcal_30m ?? 0
+          } ккал / 30 мин</div>`;
+          row.addEventListener("click", () => {
+            selectedExerciseId = ex.id;
+            for (const el of exListBox.querySelectorAll(".exercise-item"))
+              el.classList.remove("active");
+            row.classList.add("active");
+            updateExConfirmState();
+          });
+          exListBox.appendChild(row);
+        }
+      }
+
+      // UI wire
       const dateInput = $("#date-input");
       const btnShow = $("#btn-show");
       const btnToday = $("#btn-today");
-
       dateInput.value = toISODate(new Date());
       btnShow.addEventListener("click", () => {
         const v = dateInput.value;
