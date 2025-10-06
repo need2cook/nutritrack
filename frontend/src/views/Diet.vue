@@ -1,4 +1,3 @@
-
 <template>
   <div class="diet-page">
     <Hat @dateSelected="loadDayByDate" />
@@ -11,7 +10,6 @@
 
     <!-- Общая сводка калорий -->
     <section class="summary-card">
-      <!-- Макросы -->
       <div class="macros-summary">
         <div class="macro-item">
           <span class="value">{{ totalProteins }}г</span>
@@ -31,7 +29,7 @@
       <div class="daily-summary">
         <div class="summary-block">
           <span class="summary-label">Норма калорий</span>
-          <span class="summary-value">{{сalorieIntake}} ккал</span>
+          <span class="summary-value">{{calorieIntake}} ккал</span>
         </div>
         <div class="summary-block">
           <span class="summary-label">Съедено</span>
@@ -48,9 +46,8 @@
       </div>
     </section>
 
-    <!-- Контейнеры -->
+    <!-- Приём пищи -->
     <div class="containers">
-      <!-- Приём пищи -->
       <div class="container">
         <div class="container-header" @click="toggleContainer('meals')">
           <div class="container-title">
@@ -120,7 +117,7 @@
               <h3>Упражнения</h3>
             </div>
             
-            <div class="container-summary" v-if="dayData.exercise_entries && dayData.exercise_entries.length > 0">
+            <div class="container-summary">
               <span class="summary-item">-{{ totalBurnedCalories }} ккал</span>
               <span class="summary-item">{{ totalExerciseTime }} мин</span>
             </div>
@@ -140,18 +137,18 @@
         <!-- Меню при нажатии на Упражнения -->
         <transition name="slide">
           <div class="container-content" v-show="expandedContainers.exercises">
-            <div v-if="dayData.exercise_entries && dayData.exercise_entries.length > 0">
+            <div v-if="dayData && dayData.exersice_entries.length > 0">
               <div 
-                v-for="entry in dayData.exercise_entries" 
+                v-for="entry in dayData.exersice_entries" 
                 :key="entry.id"
                 class="exercise-item"
               >
                 <div class="exercise-info">
-                  <span class="exercise-name">{{ entry.exercise.title }}</span>
-                  <span class="exercise-duration">{{ entry.minutes }} мин</span>
+                  <span class="exercise-name">{{ entry.exersice.title }}</span>
+                  <span class="exercise-duration">{{ entry.minutes }}мин</span>
                 </div>
                 <div class="exercise-details">
-                  <span class="exercise-calories">-{{ entry.calories_burned }} ккал</span>
+                  <span class="exercise-calories">-{{ Math.round(entry.exersice.kcal_30m * entry.minutes) / 30 }} ккал</span>
                 </div>
               </div>
             </div>
@@ -162,7 +159,7 @@
           </div>
         </transition>
       </div>
-
+      
       <!-- Стаканы воды -->
       <div class="container">
         <div class="container-header">
@@ -176,7 +173,7 @@
       </div>
     </div>
 
-    <!-- Панель добавления ПРОДУКТОВ -->
+    <!-- Панель добавления Продуктов -->
     <div v-if="showAddMealPanel" class="add-panel">
       <div class="add-panel-content">
         <h4>Добавить продукт</h4>
@@ -218,7 +215,7 @@
       </div>
     </div>
 
-    <!-- Панель добавления УПРАЖНЕНИЙ -->
+    <!-- Панель добавления Уупражнений -->
     <div v-if="showAddExercisePanel" class="add-panel">
       <div class="add-panel-content">
         <h4>Добавить упражнение</h4>
@@ -241,7 +238,7 @@
           >
             <div class="title">{{ exercise.title }}</div>
             <div class="macros">
-              {{ exercise.calories_per_minute }} ккал/мин
+              {{ Math.round(exercise.kcal_30m / 30) }} ккал/мин
             </div>
           </div>
         </div>
@@ -250,8 +247,8 @@
         <div v-if="selectedExercise" class="grams-panel">
           <label>Продолжительность (минут):</label>
           <input type="number" v-model.number="exerciseMinutes" class="grams-input" />
-          <div class="calories-preview" v-if="exerciseMinutes > 0">
-            Сожжено: {{ Math.round(selectedExercise.calories_per_minute * exerciseMinutes) }} ккал
+          <div class="calories-preview">
+            Сожжено: {{ Math.round(selectedExercise.kcal_30m * exerciseMinutes) / 30 }} ккал
           </div>
         </div>
 
@@ -285,7 +282,7 @@ export default {
       selectedDate: new Date(),
       selectedDateString: new Date().toISOString().split('T')[0],
       waterGoal: 2000,
-      сalorieIntake: 2400,
+      calorieIntake: 2400,
       expandedContainers: {
         meals: true,
         exercises: true,
@@ -295,7 +292,7 @@ export default {
       // Для добавления продуктов
       dayData: { 
         product_entries: [],
-        exercise_entries: [] 
+        exersice_entries: [] 
       },
       
       // Продукты
@@ -346,13 +343,13 @@ export default {
       ) || 0;
     },
     totalBurnedCalories() {
-      return this.dayData.exercise_entries?.reduce(
-        (sum, entry) => sum + entry.calories_burned,
+      return this.dayData.exersice_entries?.reduce(
+        (sum, entry) => sum + Math.round((entry.exersice.kcal_30m * entry.minutes) / 30),
         0
       ) || 0;
     },
     totalExerciseTime() {
-      return this.dayData.exercise_entries?.reduce(
+      return this.dayData.exersice_entries?.reduce(
         (sum, entry) => sum + entry.minutes,
         0
       ) || 0;
@@ -369,8 +366,6 @@ export default {
         await this.fetchDayData();
         return;
       }
-
-      console.log('Получен initData от Telegram');
 
       // Выполняем handshake авторизацию
       const authResult = await authHandshake(telegramInitData);
@@ -402,7 +397,7 @@ export default {
         this.dayData = { 
           date: this.formattedDate, 
           product_entries: [],
-          exercise_entries: []
+          exersice_entries: []
         };
       } finally {
         this.loading = false;
@@ -481,7 +476,7 @@ export default {
       this.selectedExercise = exercise;
     },
 
-    // Добавление упражнения в рацион
+    // Добавление упражнения
     async addExercise() {
       if (!this.selectedExercise || !this.exerciseMinutes) return;
       if (!this.initData) {

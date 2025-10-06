@@ -1,6 +1,6 @@
 import { apiFetch } from './index.js';
 
-// Получить рацион на конкретный день
+// Получить конкретный день
 export async function fetchDay(date, initData) {
   const targetDate = date.toISOString().split('T')[0];
   const isToday = targetDate === new Date().toISOString().split('T')[0];
@@ -25,7 +25,7 @@ export async function addProductToDay({ date, productId, grams, initData }) {
 
 // Добавить упражнение в рацион
 export async function addExerciseToDay({ date, exerciseId, minutes, initData }) {
-  return apiFetch('/api/v1/diaries/day/exercise', {
+  const res = await apiFetch('/api/v1/diaries/day/exercise', {
     method: 'POST',
     body: JSON.stringify({
       target_date: date.toISOString().split('T')[0],
@@ -34,4 +34,5 @@ export async function addExerciseToDay({ date, exerciseId, minutes, initData }) 
     }),
     initData
   });
+
 }
