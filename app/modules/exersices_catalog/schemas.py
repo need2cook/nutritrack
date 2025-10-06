@@ -6,3 +6,10 @@ class ExercisesOut(BaseModel):
     title: str
     kcal_30m: int
 
+
+class AddExerciseOut(BaseModel):
+    success: bool
+
+class CreateExerciseIn(BaseModel):
+    title: str
+    kcal_30m: int
