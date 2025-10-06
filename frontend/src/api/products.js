@@ -1,8 +1,12 @@
 import { apiFetch } from './index.js';
 
-export async function fetchProducts(query) {
-  if (!query) return [];
+// Получить список продуктов из каталога
+export async function fetchProducts(query = '', initData) {
+  const data = await apiFetch('/api/v1/products_catalog/', { initData });
 
-  const data = await apiFetch('/api/v1/public/products');
-  return data.filter(p => p.title.toLowerCase().includes(query.toLowerCase()));
+  if (!query) return data;
+  return data.filter(p =>
+    p.title.toLowerCase().includes(query.toLowerCase())
+  );
 }
+

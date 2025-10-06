@@ -119,6 +119,7 @@ export default {
   border-radius: 15px;
   width: 300px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  margin-top: 80px;
 }
 
 .modal-header {

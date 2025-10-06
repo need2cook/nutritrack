@@ -11,8 +11,14 @@ export async function apiFetch(url, options = {}) {
   });
 
   if (!response.ok) {
-    throw new Error(`Ошибка ${response.status}`);
+    const message = await response.text();
+    throw new Error(`Ошибка ${response.status}: ${message}`);
   }
 
-  return response.json();
+  // Возвращаем JSON, если возможно
+  try {
+    return await response.json();
+  } catch {
+    return null;
+  }
 }

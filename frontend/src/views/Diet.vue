@@ -1,3 +1,4 @@
+
 <template>
   <div class="diet-page">
     <Hat @dateSelected="loadDayByDate" />
@@ -70,7 +71,7 @@
               <font-awesome-icon :icon="['fas', 'chevron-down']" />
             </button>
             <div class="btn-add">
-              <button class="add-btn" @click="showAddPanel = true">
+              <button class="add-btn" @click="showAddMealPanel = true">
                 <font-awesome-icon :icon="['fas', 'plus']" />
               </button>
             </div>
@@ -119,7 +120,7 @@
               <h3>Упражнения</h3>
             </div>
             
-            <div class="container-summary" v-if="exercises.length > 0">
+            <div class="container-summary" v-if="dayData.exercise_entries && dayData.exercise_entries.length > 0">
               <span class="summary-item">-{{ totalBurnedCalories }} ккал</span>
               <span class="summary-item">{{ totalExerciseTime }} мин</span>
             </div>
@@ -129,9 +130,9 @@
               <font-awesome-icon :icon="['fas', 'chevron-down']" />
             </button>
             <div class="btn-add">
-              <button class="add-btn" @click.stop="addExercise">
-              <font-awesome-icon :icon="['fas', 'plus']" />
-            </button>
+              <button class="add-btn" @click.stop="showAddExercisePanel = true">
+                <font-awesome-icon :icon="['fas', 'plus']" />
+              </button>
             </div>
           </div>
         </div>
@@ -139,18 +140,24 @@
         <!-- Меню при нажатии на Упражнения -->
         <transition name="slide">
           <div class="container-content" v-show="expandedContainers.exercises">
-            <div v-for="exercise in exercises" :key="exercise.id" class="exercise-item">
-              <div class="exercise-info">
-                <span class="exercise-name">{{ exercise.name }}</span>
-                <span class="exercise-duration">{{ exercise.duration }} мин</span>
-              </div>
-              <div class="exercise-details">
-                <span class="exercise-calories">-{{ exercise.caloriesBurned }} ккал</span>
+            <div v-if="dayData.exercise_entries && dayData.exercise_entries.length > 0">
+              <div 
+                v-for="entry in dayData.exercise_entries" 
+                :key="entry.id"
+                class="exercise-item"
+              >
+                <div class="exercise-info">
+                  <span class="exercise-name">{{ entry.exercise.title }}</span>
+                  <span class="exercise-duration">{{ entry.minutes }} мин</span>
+                </div>
+                <div class="exercise-details">
+                  <span class="exercise-calories">-{{ entry.calories_burned }} ккал</span>
+                </div>
               </div>
             </div>
             
-            <div v-if="exercises.length === 0" class="empty-state">
-              <p>Добавьте упражнения</p>
+            <div v-else class="empty-state">
+              <p>Нет упражнений на этот день</p>
             </div>
           </div>
         </transition>
@@ -169,12 +176,12 @@
       </div>
     </div>
 
-    <!-- Панель добавления -->
-    <div v-if="showAddPanel" class="add-panel">
+    <!-- Панель добавления ПРОДУКТОВ -->
+    <div v-if="showAddMealPanel" class="add-panel">
       <div class="add-panel-content">
         <h4>Добавить продукт</h4>
         <input
-          v-model="searchQuery"
+          v-model="mealSearchQuery"
           type="text"
           placeholder="Поиск продукта..."
           @input="fetchProducts"
@@ -206,7 +213,52 @@
         <!-- Кнопки -->
         <div class="panel-actions">
           <button @click="addProduct" class="save-btn">Добавить</button>
-          <button @click="closePanel" class="cancel-btn">Отмена</button>
+          <button @click="closeMealPanel" class="cancel-btn">Отмена</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Панель добавления УПРАЖНЕНИЙ -->
+    <div v-if="showAddExercisePanel" class="add-panel">
+      <div class="add-panel-content">
+        <h4>Добавить упражнение</h4>
+        <input
+          v-model="exerciseSearchQuery"
+          type="text"
+          placeholder="Поиск упражнения..."
+          @input="fetchExercises"
+          class="search-input"
+        />
+
+        <!-- Список упражнений -->
+        <div v-if="exercisesCatalog.length" class="product-list">
+          <div
+            v-for="exercise in exercisesCatalog"
+            :key="exercise.id"
+            class="product-card"
+            @click="selectExercise(exercise)"
+            :class="{ selected: selectedExercise?.id === exercise.id }"
+          >
+            <div class="title">{{ exercise.title }}</div>
+            <div class="macros">
+              {{ exercise.calories_per_minute }} ккал/мин
+            </div>
+          </div>
+        </div>
+
+        <!-- Ввод минут -->
+        <div v-if="selectedExercise" class="grams-panel">
+          <label>Продолжительность (минут):</label>
+          <input type="number" v-model.number="exerciseMinutes" class="grams-input" />
+          <div class="calories-preview" v-if="exerciseMinutes > 0">
+            Сожжено: {{ Math.round(selectedExercise.calories_per_minute * exerciseMinutes) }} ккал
+          </div>
+        </div>
+
+        <!-- Кнопки -->
+        <div class="panel-actions">
+          <button @click="addExercise" class="save-btn">Добавить</button>
+          <button @click="closeExercisePanel" class="cancel-btn">Отмена</button>
         </div>
       </div>
     </div>
@@ -218,9 +270,9 @@ import WeekCalendar from '@/components/WeekCalendar.vue';
 import Hat from "@/components/Hat.vue";
 
 import { fetchProducts } from '@/api/products.js';
-import { fetchDay, addProductToDay } from '@/api/day.js';
+import { fetchExercises } from '@/api/exercises.js';
+import { fetchDay, addProductToDay, addExerciseToDay } from '@/api/day.js';
 import { authHandshake } from '@/api/auth.js';
-
 
 export default {
   name: 'DietPage',
@@ -238,18 +290,29 @@ export default {
         meals: true,
         exercises: true,
       },
-      exercises: [],
       loading: false,
       
       // Для добавления продуктов
-      dayData: { product_entries: [] },
-      searchQuery: "",
+      dayData: { 
+        product_entries: [],
+        exercise_entries: [] 
+      },
+      
+      // Продукты
+      mealSearchQuery: "",
       products: [],
       selectedProduct: null,
       grams: 100,
-      showAddPanel: false,
+      showAddMealPanel: false,
       
-      // Храним initData для API запросов
+      // Упражнения
+      exerciseSearchQuery: "",
+      exercisesCatalog: [],
+      selectedExercise: null,
+      exerciseMinutes: 30,
+      showAddExercisePanel: false,
+      
+      // Храним initData
       initData: null
     }
   },
@@ -283,19 +346,25 @@ export default {
       ) || 0;
     },
     totalBurnedCalories() {
-      return this.exercises.reduce((sum, ex) => sum + ex.caloriesBurned, 0);
+      return this.dayData.exercise_entries?.reduce(
+        (sum, entry) => sum + entry.calories_burned,
+        0
+      ) || 0;
     },
     totalExerciseTime() {
-      return this.exercises.reduce((sum, ex) => sum + ex.duration, 0);
+      return this.dayData.exercise_entries?.reduce(
+        (sum, entry) => sum + entry.minutes,
+        0
+      ) || 0;
     }
   },
+
   async mounted() {
     try {
-      // Получаем initData от Telegram WebApp
+      // Получаем initData
       const telegramInitData = window?.Telegram?.WebApp?.initData || null;
 
       if (!telegramInitData) {
-        console.warn('InitData не найден. Проверь Telegram WebApp');
         this.initData = "fallback-init-data-for-development";
         await this.fetchDayData();
         return;
@@ -307,7 +376,7 @@ export default {
       const authResult = await authHandshake(telegramInitData);
       console.log('Handshake успешен:', authResult);
 
-      // Сохраняем initData для API запросов
+      // Сохраняем initData
       this.initData = telegramInitData;
 
       // Загружаем данные дня
@@ -316,6 +385,7 @@ export default {
       console.error('Ошибка авторизации:', err);
     }
   },
+
   methods: {
     // Загрузка рациона за день
     async fetchDayData() {
@@ -329,25 +399,34 @@ export default {
         this.dayData = await fetchDay(this.selectedDate, this.initData);
       } catch (err) {
         console.error('Ошибка загрузки рациона:', err);
-        this.dayData = { date: this.formattedDate, product_entries: [] };
+        this.dayData = { 
+          date: this.formattedDate, 
+          product_entries: [],
+          exercise_entries: []
+        };
       } finally {
         this.loading = false;
       }
     },
-
+    
     // Поиск продуктов
     async fetchProducts() {
-      if (!this.searchQuery) {
+      if (!this.mealSearchQuery) {
         this.products = [];
         return;
       }
 
       try {
-        this.products = await fetchProducts(this.searchQuery);
+        this.products = await fetchProducts(this.mealSearchQuery, this.initData);
       } catch (err) {
         console.error('Ошибка загрузки продуктов:', err);
         this.products = [];
       }
+    },
+
+    // Выбор продукта
+    selectProduct(product) {
+      this.selectedProduct = product;
     },
 
     // Добавление продукта в рацион
@@ -367,25 +446,71 @@ export default {
         });
 
         await this.fetchDayData();
-        this.closePanel();
+        this.closeMealPanel();
       } catch (err) {
         console.error('Ошибка добавления продукта:', err);
-        alert('Не удалось добавить продукт. Проверьте подключение.');
       }
     },
 
-    // Выбор продукта
-    selectProduct(product) {
-      this.selectedProduct = product;
-    },
-
-    // Закрытие панели добавления
-    closePanel() {
-      this.showAddPanel = false;
-      this.searchQuery = "";
+    // Закрытие панели добавления продуктов
+    closeMealPanel() {
+      this.showAddMealPanel = false;
+      this.mealSearchQuery = "";
       this.products = [];
       this.selectedProduct = null;
       this.grams = 100;
+    },
+
+    // Поиск упражнений
+    async fetchExercises() {
+      if (!this.exerciseSearchQuery) {
+        this.exercisesCatalog = [];
+        return;
+      }
+
+      try {
+        this.exercisesCatalog = await fetchExercises(this.exerciseSearchQuery, this.initData);
+      } catch (err) {
+        console.error('Ошибка загрузки упражнений:', err);
+        this.exercisesCatalog = [];
+      }
+    },
+
+    // Выбор упражнения
+    selectExercise(exercise) {
+      this.selectedExercise = exercise;
+    },
+
+    // Добавление упражнения в рацион
+    async addExercise() {
+      if (!this.selectedExercise || !this.exerciseMinutes) return;
+      if (!this.initData) {
+        console.warn('InitData отсутствует');
+        return;
+      }
+
+      try {
+        await addExerciseToDay({
+          date: this.selectedDate,
+          exerciseId: this.selectedExercise.id,
+          minutes: this.exerciseMinutes,
+          initData: this.initData
+        });
+
+        await this.fetchDayData();
+        this.closeExercisePanel();
+      } catch (err) {
+        console.error('Ошибка добавления упражнения:', err);
+      }
+    },
+
+    // Закрытие панели добавления упражнений
+    closeExercisePanel() {
+      this.showAddExercisePanel = false;
+      this.exerciseSearchQuery = "";
+      this.exercisesCatalog = [];
+      this.selectedExercise = null;
+      this.exerciseMinutes = 30;
     },
 
     // Обработчики даты
@@ -403,10 +528,6 @@ export default {
     // Разворачивание контейнеров
     toggleContainer(container) {
       this.expandedContainers[container] = !this.expandedContainers[container];
-    },
-
-    addExercise() {
-      console.log('Добавить упражнение');
     },
 
     loadDayByDate(date) {
@@ -609,6 +730,13 @@ export default {
   gap: 10px;
   align-items: center;
   flex-wrap: wrap;
+}
+
+.calories-preview {
+  font-size: 12px;
+  color: #f44336;
+  font-weight: bold;
+  margin-top: 5px;
 }
 
 .grams-panel label {
