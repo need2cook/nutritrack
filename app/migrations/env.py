@@ -6,17 +6,8 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from alembic import context
-from app.db import database_url
-from app.db import (
-    Base, 
-    User, 
-    Diary, 
-    Product, 
-    Day, 
-    ProductEntity, 
-    Exersice, 
-    ExersiceEntity
-)
+from app.core.db import database_url
+from app.modules import Base, User, Diary, Product, Day, ProductEntity, Exersice, ExersiceEntity
 
 
 # this is the Alembic Config object, which provides
