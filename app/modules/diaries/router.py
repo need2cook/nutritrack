@@ -20,6 +20,7 @@ from .schemas import (
     DeleteProductOut,
     DeleteProductOut,
     DeleteProductIn,
+    AddWaterIn,
 )
 from .service import DiaryService
 
@@ -112,4 +113,23 @@ async def add_exercise(
         minutes=payload.minutes,
     )
     return AddExerciseOut(success=True)
+    
+
+@router.put('/day/water', response_model=AddExerciseOut)
+async def add_water(
+    payload: AddWaterIn,
+    user: "User" = Depends(AuthService.get_current_user_readonly),
+    session: AsyncSession = Depends(db_sessions.get_db),
+):
+    svc = DiaryService(session, tz="Europe/Moscow")
+
+    await svc.add_water_to_day(
+        user_id=user.id,
+        diary_id=user.diary.id,
+        target_date=payload.target_date,
+        water_mls=payload.water_mls,
+    )
+
+    return AddExerciseOut(success=True)
+
     

@@ -1,6 +1,7 @@
 from fastapi import HTTPException, status
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import update as sqlalchemy_update
 
 from .models import Day, ProductEntity, ExersiceEntity, Diary
 
@@ -99,6 +100,29 @@ class DayDAO(BaseDAO):
                 minutes=ExersiceEntity.minutes + minutes
             )
             await session.flush()
+
+    @staticmethod
+    async def add_water(
+        session: AsyncSession,
+        *,
+        day_id: int,
+        water_mls: int,
+    ):
+        upd = await session.execute(
+            sqlalchemy_update(Day)
+            .where(Day.id == day_id)
+            .values(
+                water_drinked_ml=Day.water_drinked_ml + water_mls
+            )
+        )
+
+        if upd.rowcount != 1:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="День не найден."
+            )
+        
+
 
 
 class ProductEntityDAO(BaseDAO):

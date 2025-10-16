@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import Integer, ForeignKey, UniqueConstraint, Index, CheckConstraint, Date
+from sqlalchemy import Integer, ForeignKey, UniqueConstraint, Index, CheckConstraint, Date, text
 from app.modules.base import Base
 import datetime
 
@@ -62,6 +62,8 @@ class Day(Base):
         cascade="all, delete-orphan",
         lazy="selectin",
     )
+
+    water_drinked_ml: Mapped[int] = mapped_column(Integer, nullable=False, server_default=text('0'))
 
     __table_args__ = (
         UniqueConstraint("diary_id", "date", name="uq_day_diary_date"),

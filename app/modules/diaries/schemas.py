@@ -31,6 +31,7 @@ class ExersiceEntryOut(BaseModel):
 class DayOut(BaseModel):
     id: int
     date: date
+    water_drinked_ml: int
 
     model_config = {"from_attributes": True}
 
@@ -92,3 +93,8 @@ class AddExerciseIn(BaseModel):
         if v <= 0:
             raise ValueError("Количество минут должно быть > 0")
         return v
+    
+
+class AddWaterIn(BaseModel):
+    target_date: date
+    water_mls: int

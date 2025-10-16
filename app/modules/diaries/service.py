@@ -197,3 +197,37 @@ class DiaryService:
             logger.error(e)
             await self.session.rollback()
             raise HTTPException(status_code=500, detail="Не удалось добавить упражнение в день.") from e
+        
+    async def add_water_to_day(
+        self,
+        user_id: int,
+        diary_id: int,
+        target_date: date, 
+        water_mls: int,
+    ):
+        try:
+            day = await self.get_or_create_day(user_id=user_id, diary_id=diary_id, target_date=target_date)
+            await DayDAO.add_water(
+                session=self.session,
+                day_id=day.id,
+                water_mls=water_mls
+            )
+
+            await self.session.commit()
+        except HTTPException:
+            raise
+        except IntegrityError as e:
+            await self.session.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Конфликт при воды в день.",
+            ) from e
+        except SQLAlchemyError as e:
+            await self.session.rollback()
+            raise HTTPException(status_code=500, detail="Ошибка БД при добавлении воды.") from e
+        except Exception as e:
+            logger.error(e)
+            await self.session.rollback()
+            raise HTTPException(status_code=500, detail="Не удалось добавить воду в день.") from e
+        
+            
