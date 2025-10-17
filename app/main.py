@@ -13,11 +13,33 @@ from fastapi import FastAPI, Request
 
 from aiogram.types import Update
 
+from alembic import command
+from alembic.config import Config as AlembicConfig
+import asyncio
+import os
+
+async def run_alembic_migration():
+    try:
+        BASE_DIR = settings.BASE_DIR
+        alembic_cfg = AlembicConfig(os.path.join(BASE_DIR, "alembic.ini"))
+        await asyncio.to_thread(command.upgrade, alembic_cfg, "head")
+    except Exception as e:
+        raise
+
+def run_migrations():
+    try:
+        loop = asyncio.get_running_loop()
+        loop.create_task(run_alembic_migration())
+    except RuntimeError:
+        asyncio.run(run_alembic_migration())
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await start_bot()
     webhook_url = settings.get_webhook_url()
+
+    run_migrations()
 
     dp.include_routers(*routers)
 
