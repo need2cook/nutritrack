@@ -9,3 +9,4 @@ logs/*
 alembic/versions/__pycache__/
 .DS_Store
 *.pyc
+.pytest_cache/
