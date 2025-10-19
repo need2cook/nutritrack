@@ -1,19 +1,28 @@
 <template>
   <div id="app">
+    <header>
+      <Header />
+    </header>
+
     <main class="main-content">
       <router-view />
     </main>
-    <BottomNav />
+
+    <footer>
+        <BottomNav />
+    </footer>
   </div>
 </template>
 
 <script>
 import BottomNav from './components/BottomNav.vue'
+import Header from './components/Header.vue'
 
 export default {
   name: 'App',
   components: {
-    BottomNav
+    BottomNav,
+    Header
   }
 }
 </script>
@@ -23,4 +32,5 @@ export default {
   margin: 0;
   box-sizing: border-box;
 }
+
 </style>

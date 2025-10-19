@@ -2,9 +2,29 @@
   <div class="week-calendar">
     <!-- Месяц и год -->
     <div class="month-year">
-      <font-awesome-icon :icon="['fas', 'calendar']" class="calendar-icon" />
+      <button class="calendar-icon" @click="showCalendarModal = true">
+        <font-awesome-icon :icon="['fas', 'calendar']" />
+      </button>
       <span class="month">{{ currentMonth }}</span>
       <span class="year">{{ currentYear }}</span>
+    </div>
+
+    <!-- Окно с выбором даты -->
+    <div v-if="showCalendarModal" class="calendar-modal" @click="showCalendarModal = false">
+      <div class="calendar-modal-content" @click.stop>
+        <div class="modal-header">
+          <h3>Выберите дату</h3>
+          <button class="close-btn" @click="showCalendarModal = false">
+            <font-awesome-icon :icon="['fas', 'times']" />
+          </button>
+        </div>
+
+        <div class="date-picker">
+          <input type="date" v-model="selectedDateString" @change="emitDateChange" />
+        </div>
+
+        <button class="confirm-btn" @click="showCalendarModal = false">Готово</button>
+      </div>
     </div>
 
     <!-- Дни недели -->
@@ -42,13 +62,15 @@ export default {
   name: 'WeekCalendar',
   props: {
     selectedDate: {
-      type: Date,
+      type: [Date, String],
       default: () => new Date()
     }
   },
   emits: ['dateSelected'],
   data() {
     return {
+      showCalendarModal: false,
+      selectedDateString: this.formatDate(new Date()),
       currentWeekStart: this.getStartOfWeek(new Date()),
       days: ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'],
       dayNames: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
@@ -91,9 +113,19 @@ export default {
     }
   },
   methods: {
+    formatDate(date) {
+      const dateObj = typeof date === 'string' ? new Date(date) : date;
+      return dateObj.toISOString().slice(0, 10);
+    },
+
+    emitDateChange() {
+      const dateObj = new Date(this.selectedDateString);
+      this.$emit('dateSelected', dateObj);
+    },
+
     getStartOfWeek(date) {
-      const targetDate = new Date(date);
-      // Находим понедельник (1 - понедельник, 0 - воскресенье)
+      const dateObj = typeof date === 'string' ? new Date(date) : date;
+      const targetDate = new Date(dateObj);
       const day = targetDate.getDay();
       const diff = targetDate.getDate() - (day === 0 ? 6 : day - 1);
       return new Date(targetDate.setDate(diff));
@@ -111,7 +143,12 @@ export default {
     
     isSelectedDay(day) {
       if (!this.selectedDate) return false;
-      return day.date.toDateString() === this.selectedDate.toDateString();
+      
+      const selectedDateObj = typeof this.selectedDate === 'string' 
+        ? new Date(this.selectedDate) 
+        : this.selectedDate;
+        
+      return day.date.toDateString() === selectedDateObj.toDateString();
     },
     
     selectDay(day) {
@@ -131,7 +168,8 @@ export default {
     },
     
     setWeekForDate(date) {
-      this.currentWeekStart = this.getStartOfWeek(date);
+      const dateObj = typeof date === 'string' ? new Date(date) : date;
+      this.currentWeekStart = this.getStartOfWeek(dateObj);
     }
   },
   watch: {
@@ -139,6 +177,7 @@ export default {
       handler(newDate) {
         if (newDate) {
           this.setWeekForDate(newDate);
+          this.selectedDateString = this.formatDate(newDate);
         }
       },
       immediate: true
@@ -165,9 +204,90 @@ export default {
 }
 
 .calendar-icon {
+  background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.calendar-icon:hover {
+  background: linear-gradient(135deg, #43a047 0%, #57bb5c 100%);
+  transform: scale(1.05);
+}
+
+.calendar-icon {
   font-size: 16px;
-  color: #4caf50;
+  color: white;
   opacity: 0.8;
+}
+
+.calendar-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.calendar-modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 15px;
+  width: 300px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  margin-top: 80px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.date-picker {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.date-picker input {
+  padding: 8px;
+  font-size: 16px;
+  width: 100%;
+}
+
+.confirm-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+  border: none;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.confirm-btn:hover {
+  background: linear-gradient(135deg, #43a047 0%, #57bb5c 100%);
+  transform: scale(1.03);
 }
 
 .month {
@@ -322,5 +442,4 @@ export default {
     height: 25px;
   }
 }
-
 </style>

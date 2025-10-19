@@ -1,7 +1,5 @@
 <template>
   <div class="diet-page">
-    <Hat @dateSelected="loadDayByDate" />
-
     <!-- Календарь -->
     <WeekCalendar 
       :selected-date="selectedDate"
@@ -12,15 +10,15 @@
     <section class="summary-card">
       <div class="macros-summary">
         <div class="macro-item">
-          <span class="value">{{ totalProteins }}г</span>
+          <span class="value">{{ totalProteins }} г.</span>
           <span class="label">Белки</span>
         </div>
         <div class="macro-item">
-          <span class="value">{{ totalFats }}г</span>
+          <span class="value">{{ totalFats }} г.</span>
           <span class="label">Жиры</span>
         </div>
         <div class="macro-item">
-          <span class="value">{{ totalCarbs }}г</span>
+          <span class="value">{{ totalCarbs }} г.</span>
           <span class="label">Углеводы</span>
         </div>
       </div>
@@ -29,19 +27,19 @@
       <div class="daily-summary">
         <div class="summary-block">
           <span class="summary-label">Норма калорий</span>
-          <span class="summary-value">{{calorieIntake}} ккал</span>
+          <span class="summary-value">{{calorieIntake}} ккал.</span>
         </div>
         <div class="summary-block">
           <span class="summary-label">Съедено</span>
-          <span class="summary-value">{{ totalCalories }} ккал</span>
+          <span class="summary-value">{{ totalCalories }} ккал.</span>
         </div>
         <div class="summary-block">
-          <span class="summary-label">Норма воды</span>
-          <span class="summary-value">{{ waterGoal }} мл</span>
+          <span class="summary-label">Выпито воды</span>
+          <span class="summary-value">{{ dayData.water_drinked_ml }} мл.</span>
         </div>
         <div class="summary-block">
           <span class="summary-label">Сожжено</span>
-          <span class="summary-value">{{ totalBurnedCalories }} ккал</span>
+          <span class="summary-value">{{ totalBurnedCalories }} ккал.</span>
         </div>
       </div>
     </section>
@@ -56,11 +54,11 @@
               <h3>Приём пищи</h3>
             </div>
             
-            <div class="container-summary">
+            <div class="container-summary" v-if="totalCalories !== 0">
               <span class="summary-item">Б: {{ totalProteins }} г.</span>
               <span class="summary-item">Ж: {{ totalFats }} г.</span>
               <span class="summary-item">У: {{ totalCarbs }} г.</span>
-              <span class="summary-item">{{ totalCalories }} ккал</span>
+              <span class="summary-item">{{ totalCalories }} ккал.</span>
             </div>
           </div>
           <div class="header-actions">
@@ -68,7 +66,7 @@
               <font-awesome-icon :icon="['fas', 'chevron-down']" />
             </button>
             <div class="btn-add">
-              <button class="add-btn" @click="showAddMealPanel = true">
+              <button class="add-btn" @click.stop="showAddMealPanel = true">
                 <font-awesome-icon :icon="['fas', 'plus']" />
               </button>
             </div>
@@ -79,25 +77,19 @@
         <transition name="slide">
           <div class="container-content" v-show="expandedContainers.meals">
             <div v-if="dayData && dayData.product_entries.length > 0">
-              <div 
-                v-for="entry in dayData.product_entries" 
-                :key="entry.id"
-                class="meal-item"
-              >
+              <div v-for="entry in dayData.product_entries" :key="entry.id" class="meal-item">
                 <div class="meal-header">
-                  <span class="meal-name">{{ entry.product.title }}</span>
-                  <span class="meal-weight">{{ entry.grams }} г.</span>
-                </div>
-                <div class="meal-nutrition">
-                  <span class="nutrition-info">
+                  <span class="meal-name">{{ entry.product.title }} - {{ entry.grams }} г.</span>
+                  <div class="nutrition-info">
                     Б: {{ ((entry.product.proteins_100g * entry.grams) / 100).toFixed(1) }} г. 
                     Ж: {{ ((entry.product.fats_100g * entry.grams) / 100).toFixed(1) }} г. 
                     У: {{ ((entry.product.carbs_100g * entry.grams) / 100).toFixed(1) }} г. 
-                    <span class="meal-calories">
-                      {{ Math.round((entry.product.kcal_100g * entry.grams) / 100) }} ккал
-                    </span>
-                  </span>
+                    <span class="meal-calories">{{ Math.round((entry.product.kcal_100g * entry.grams) / 100) }} ккал.</span>
+                  </div>
                 </div>
+                <button class="delete-btn" @click="deleteProductFromDay(entry.id)" :disabled="loading">
+                  <font-awesome-icon :icon="['fas', 'plus']" />
+                </button>
               </div>
             </div>
             
@@ -117,9 +109,9 @@
               <h3>Упражнения</h3>
             </div>
             
-            <div class="container-summary">
-              <span class="summary-item">-{{ totalBurnedCalories }} ккал</span>
-              <span class="summary-item">{{ totalExerciseTime }} мин</span>
+            <div class="container-summary" v-if="totalBurnedCalories !== 0">
+              <span class="summary-item">-{{ totalBurnedCalories }} ккал.</span>
+              <span class="summary-item">{{ totalExerciseTime }} мин.</span>
             </div>
           </div>
           <div class="header-actions">
@@ -138,18 +130,14 @@
         <transition name="slide">
           <div class="container-content" v-show="expandedContainers.exercises">
             <div v-if="dayData && dayData.exersice_entries.length > 0">
-              <div 
-                v-for="entry in dayData.exersice_entries" 
-                :key="entry.id"
-                class="exercise-item"
-              >
+              <div v-for="entry in dayData.exersice_entries"  :key="entry.id" class="exercise-item">
                 <div class="exercise-info">
-                  <span class="exercise-name">{{ entry.exersice.title }}</span>
-                  <span class="exercise-duration">{{ entry.minutes }}мин</span>
+                  <span class="exercise-name">{{ entry.exersice.title }}  -{{ Math.round(entry.exersice.kcal_30m * entry.minutes) / 30 }} ккал.</span>
+                  <span class="exercise-duration">{{ entry.minutes }} мин.</span>
                 </div>
-                <div class="exercise-details">
-                  <span class="exercise-calories">-{{ Math.round(entry.exersice.kcal_30m * entry.minutes) / 30 }} ккал</span>
-                </div>
+                <button class="delete-btn" @click="deleteExerciseFromDay(entry.id)" :disabled="loading">
+                    <font-awesome-icon :icon="['fas', 'plus']" />
+                </button>
               </div>
             </div>
             
@@ -160,7 +148,7 @@
         </transition>
       </div>
       
-      <!-- Стаканы воды -->
+      <!-- Секция воды -->
       <div class="container">
         <div class="container-header">
           <div class="container-title">
@@ -168,9 +156,19 @@
               <font-awesome-icon :icon="['fas', 'glass-water']" />
               <h3>Вода</h3>
             </div>
+            <div class="container-summary" v-if="dayData.water_drinked_ml !== 0">
+              <span class="summary-item">{{ dayData.water_drinked_ml }} мл.</span>
+            </div>
+          </div>
+          <div class="header-actions">
+            <div class="btn-add">
+              <button class="water-add-btn" @click.stop="addWater('')">
+                <font-awesome-icon :icon="['fas', 'glass-water']" />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      </div>  
     </div>
 
     <!-- Панель добавления Продуктов -->
@@ -215,7 +213,7 @@
       </div>
     </div>
 
-    <!-- Панель добавления Уупражнений -->
+    <!-- Панель добавления Упражнений -->
     <div v-if="showAddExercisePanel" class="add-panel">
       <div class="add-panel-content">
         <h4>Добавить упражнение</h4>
@@ -264,35 +262,38 @@
 
 <script>
 import WeekCalendar from '@/components/WeekCalendar.vue';
-import Hat from "@/components/Hat.vue";
+import Header from "@/components/Header.vue";
 
 import { fetchProducts } from '@/api/products.js';
 import { fetchExercises } from '@/api/exercises.js';
-import { fetchDay, addProductToDay, addExerciseToDay } from '@/api/day.js';
+import { fetchDay, addProductToDay, addExerciseToDay, addWaterToDay } from '@/api/day.js';
+import { deleteProduct, deleteExercise } from '@/api/delete.js';
 import { authHandshake } from '@/api/auth.js';
 
 export default {
   name: 'DietPage',
   components: { 
-    Hat,
+    Header,
     WeekCalendar
   },
   data() {
     return {
       selectedDate: new Date(),
       selectedDateString: new Date().toISOString().split('T')[0],
-      waterGoal: 2000,
       calorieIntake: 2400,
       expandedContainers: {
         meals: true,
         exercises: true,
+        water: true,
       },
       loading: false,
+      deleteLoading: false,
       
       // Для добавления продуктов
       dayData: { 
         product_entries: [],
-        exersice_entries: [] 
+        exersice_entries: [],
+        water_mls: 0
       },
       
       // Продукты
@@ -308,10 +309,10 @@ export default {
       selectedExercise: null,
       exerciseMinutes: 30,
       showAddExercisePanel: false,
-      
+
       // Храним initData
       initData: null
-    }
+    }  
   },
   computed: {
     formattedDate() {
@@ -353,9 +354,8 @@ export default {
         (sum, entry) => sum + entry.minutes,
         0
       ) || 0;
-    }
+    },
   },
-
   async mounted() {
     try {
       // Получаем initData
@@ -397,14 +397,32 @@ export default {
         this.dayData = { 
           date: this.formattedDate, 
           product_entries: [],
-          exersice_entries: []
+          exersice_entries: [],
+          water_mls: 0
         };
       } finally {
         this.loading = false;
       }
     },
     
-    // Поиск продуктов
+    // Добавление воды
+    async addWater() {
+      try {
+        await addWaterToDay({
+          date: this.selectedDate,
+          waterMls: 100,
+          initData: this.initData
+        });
+
+        console.log('Добавлено 100 мл воды');
+
+        await this.fetchDayData();
+    
+      } catch (error) {
+        console.error('Ошибка добавления воды:', error);
+      }
+    },
+
     async fetchProducts() {
       if (!this.mealSearchQuery) {
         this.products = [];
@@ -456,7 +474,29 @@ export default {
       this.grams = 100;
     },
 
-    // Поиск упражнений
+    // Удаление продуктов
+    async deleteProductFromDay(productId) {
+
+      this.deleteLoading = true;
+      
+      try {
+        console.log('продукт удалён с ID:', productId);
+
+        await deleteProduct({
+          date: this.selectedDate,
+          productId: productId,
+          initData: this.initData
+        });
+
+        console.log('продукт удалён');
+
+        await this.fetchDayData();
+
+      } catch (err) {
+        console.error('Ошибка удаления продукта:', err);
+      }
+    },
+
     async fetchExercises() {
       if (!this.exerciseSearchQuery) {
         this.exercisesCatalog = [];
@@ -508,7 +548,28 @@ export default {
       this.exerciseMinutes = 30;
     },
 
-    // Обработчики даты
+    // Удаление упражнений
+    async deleteExerciseFromDay(exerciseId) {
+      this.deleteLoading = true;
+      
+      try {
+        console.log('продукт удалён с ID:', exerciseId);
+
+        await deleteExercise({
+          date: this.selectedDate,
+          exerciseId: exerciseId,
+          initData: this.initData
+        });
+
+        console.log('упражнение удалёно');
+
+        await this.fetchDayData();
+
+      } catch (err) {
+        console.error('Ошибка удаления продукта:', err);
+      }
+    },
+
     onDateSelected(date) {
       this.selectedDate = date;
       this.selectedDateString = date.toISOString().split('T')[0];
@@ -520,7 +581,6 @@ export default {
       this.onDateSelected(this.selectedDate);
     },
 
-    // Разворачивание контейнеров
     toggleContainer(container) {
       this.expandedContainers[container] = !this.expandedContainers[container];
     },
@@ -540,6 +600,7 @@ export default {
   background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
   color: #2e7d32;
   font-family: 'Arial', sans-serif;
+  min-height: 100vh;
 }
 
 .summary-card {
@@ -568,11 +629,6 @@ export default {
   margin-bottom: 3px;
 }
 
-.macro-item .label {
-  font-size: 11px;
-  opacity: 0.9;
-}
-
 .daily-summary {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -586,13 +642,11 @@ export default {
   background: rgba(255, 255, 255, 0.2);
   padding: 8px;
   border-radius: 8px;
-  backdrop-filter: blur(10px);
 }
 
 .summary-label {
   display: block;
   font-size: 11px;
-  opacity: 0.9;
   margin-bottom: 4px;
 }
 
@@ -600,6 +654,25 @@ export default {
   font-size: 15px;
   font-weight: bold;
   color: #e8f5e9;
+}
+
+/* Стили для кнопки добавления воды */
+.water-add-btn {
+  background: linear-gradient(135deg, #2196F3 0%, #21CBF3 100%);
+  color: white;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.water-add-btn:hover {
+  background: linear-gradient(135deg, #1976D2 0%, #00B0FF 100%);
 }
 
 /* Заголовок дня с кнопкой добавления */
@@ -628,6 +701,7 @@ export default {
   background: linear-gradient(135deg, #43a047 0%, #57bb5c 100%);
   transform: scale(1.1);
 }
+
 
 /* Панель добавления */
 .add-panel {
@@ -710,13 +784,13 @@ export default {
 
 .title {
   font-weight: bold;
-  color: #2e7d32;
+  color: black;
   margin-bottom: 4px;
 }
 
 .macros {
   font-size: 12px;
-  color: #4caf50;
+  color: black;
 }
 
 .grams-panel {
@@ -904,8 +978,17 @@ export default {
 }
 
 .meal-item {
+  padding: 10px 12px;
+}
+
+.meal-item:last-child {
+  border-bottom: none;
+}
+
+.meal-item {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
   padding: 10px 12px;
   border-bottom: 1px solid #e8f5e9;
   background: white;
@@ -917,41 +1000,52 @@ export default {
 
 .meal-header {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 5px;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
 }
 
 .meal-name {
   font-weight: 500;
+  font-weight: bold;
   font-size: 13px;
-  flex: 1;
   color: #2e7d32;
-}
-
-.meal-weight {
-  font-size: 12px;
-  color: #4caf50;
-}
-
-.meal-nutrition {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .nutrition-info {
   font-size: 11px;
-  color: #66bb6a;
+  color: #2e7d32;
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
 .meal-calories {
-  font-weight: bold;
   color: #2e7d32;
   font-size: 12px;
+  font-weight: bold;
+}
+
+.delete-btn {
+  background: #ff4444;
+  border: none;
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  transform: rotate(45deg);
+  
+}
+
+.delete-btn:hover {
+  background: #cc0000;
+  transform: rotate(45deg) scale(1.1);
 }
 
 .exercise-item {
@@ -970,32 +1064,18 @@ export default {
 .exercise-info {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 5px;
 }
 
 .exercise-name {
-  font-weight: 500;
-  font-size: 13px;
+  font-weight: bold;
+  font-size: 12px;
   color: #2e7d32;
 }
 
 .exercise-duration {
-  font-size: 11px;
+  font-size: 10px;
   color: #4caf50;
-}
-
-.exercise-details {
-  text-align: right;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  align-items: flex-end;
-}
-
-.exercise-calories {
-  font-size: 13px;
-  font-weight: bold;
-  color: #f44336;
 }
 
 .empty-state {
@@ -1092,6 +1172,5 @@ export default {
     width: 100%;
   }
 }
-
 
 </style>

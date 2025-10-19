@@ -34,5 +34,21 @@ export async function addExerciseToDay({ date, exerciseId, minutes, initData }) 
     }),
     initData
   });
+}
 
+// Добавление воды
+export async function addWaterToDay({ date, waterMls, initData }) {
+  const res = await apiFetch('/api/v1/diaries/day/water', {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Telegram-Init-Data': initData
+    },
+    body: JSON.stringify({
+      target_date: date.toISOString().split('T')[0],
+      water_mls: waterMls
+    })
+  });
+
+  return res;
 }
