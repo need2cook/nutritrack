@@ -15,5 +15,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # копируем проект
 COPY . .
 
+# запускаем тесты
+RUN python -m pytest tests/ -v --tb=short
+
 # запускаем через uvicorn
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
