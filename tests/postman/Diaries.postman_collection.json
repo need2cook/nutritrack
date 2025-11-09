@@ -1,0 +1,244 @@
+{
+	"info": {
+		"_postman_id": "c8d51270-234d-45a3-a75a-e428d0534e22",
+		"name": "Diaries",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49720802",
+		"_collection_link": "https://natysya030704-5571868.postman.co/workspace/Nutritrack~580cc49f-30d2-4951-b5c0-1023c1abbce3/collection/49720802-c8d51270-234d-45a3-a75a-e428d0534e22?action=share&source=collection_link&creator=49720802"
+	},
+	"item": [
+		{
+			"name": "today",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Telegram-Init-Data",
+						"value": "{{telegram_init_data}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/v1/diaries/day/today",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"diaries",
+						"day",
+						"today"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "day",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Telegram-Init-Data",
+						"value": "{{telegram_init_data}}",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/v1/diaries/day/2025-11-05",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"diaries",
+						"day",
+						"2025-11-05"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add product",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Telegram-Init-Data",
+						"value": "{{telegram_init_data}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"target_date\": \"2025-11-06\",\r\n  \"product_id\": 1,\r\n  \"grams\": 200\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/diaries/day/product",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"diaries",
+						"day",
+						"product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete product",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-Telegram-Init-Data",
+						"value": "{{telegram_init_data}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/v1/diaries/day/2025-11-06/product/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"diaries",
+						"day",
+						"2025-11-06",
+						"product",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add exercize",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Telegram-Init-Data",
+						"value": "{{telegram_init_data}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"target_date\": \"2025-11-06\",\r\n  \"exercise_id\": 1,\r\n  \"minutes\": 15\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/diaries/day/exercise",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"diaries",
+						"day",
+						"exercise"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete exercise",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-Telegram-Init-Data",
+						"value": "{{telegram_init_data}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/v1/diaries/day/2025-11-06/exercise/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"diaries",
+						"day",
+						"2025-11-06",
+						"exercise",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add water",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-Telegram-Init-Data",
+						"value": "{{telegram_init_data}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"target_date\": \"2025-11-06\",\r\n  \"water_mls\": 600\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/diaries/day/water",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"diaries",
+						"day",
+						"water"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
