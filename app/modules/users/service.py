@@ -37,3 +37,24 @@ class UserService:
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Что-то пошло не так, попробуйте позже.."
             )
+        
+
+    async def edit_goal(
+        self,
+        user_id: int,
+        new_goal: float,
+    ):
+        try:
+            await UserDAO.update(
+                self.session,
+                {'id': user_id},
+                goal=new_goal,
+            )
+            await self.session.commit()
+        except Exception as e:
+            await self.session.rollback()
+            logger.error(f"Неизвестная ошибка в edit_goal: {e}")
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Что-то пошло не так, попробуйте позже.."
+            )

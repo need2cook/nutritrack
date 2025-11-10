@@ -21,6 +21,7 @@ class User(Base):
     username: Mapped[Optional[str]] = mapped_column(String(64), unique=True)
     first_name: Mapped[str] = mapped_column(String(64), nullable=False)
     current_weight: Mapped[Optional[float]] = mapped_column(Float)
+    goal: Mapped[Optional[int]] = mapped_column(Integer)
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(server_default=func.now(), onupdate=func.now())
 
