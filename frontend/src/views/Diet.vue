@@ -382,28 +382,32 @@ export default {
   },
   
   async mounted() {
-    try {
-      // Получаем initData
-      const telegramInitData = window?.Telegram?.WebApp?.initData || null;
+  try {
+    await new Promise(resolve => setTimeout(resolve, 300));
 
-      if (!telegramInitData) {
-        this.initData = "fallback-init-data-for-development";
-        await this.fetchDayData();
-        return;
-      }
+    // Получаем initData из Telegram WebApp
+    const telegramInitData = window?.Telegram?.WebApp?.initData;
 
-      // Выполняем handshake авторизацию
-      const authResult = await authHandshake(telegramInitData);
-      console.log('Handshake успешен:', authResult);
+    // Если приложение открыто не через Telegram
+    if (!telegramInitData) {
+      console.warn('Telegram initData не найден — dev fallback.');
+      this.initData = 'fake-dev-init-data';
+      return;
+    }
 
-      // Сохраняем initData
-      this.initData = telegramInitData;
+    // Выполняем handshake с сервером
+    const authResult = await authHandshake(telegramInitData);
+    console.log('Handshake успешен:', authResult);
 
-      // Загружаем данные
-      await this.fetchDayData();
-      await this.loadUserProfile();
-    } catch (err) {
-      console.error('Ошибка авторизации:', err);
+    // Сохраняем initData
+    this.initData = telegramInitData;
+
+    // Загружаем данные пользователя
+    await this.fetchDayData();
+    await this.loadUserProfile();
+
+  } catch (err) {
+    console.error('Ошибка авторизации / handshake:', err);
     }
   },
 
