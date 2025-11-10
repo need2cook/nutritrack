@@ -17,7 +17,10 @@ import {
   faChevronUp,
   faAppleAlt,
   faTimes,
-  faPen
+  faPen,
+  faChartPie,
+  faFlag,
+  faUser 
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
@@ -32,7 +35,11 @@ library.add(
   faChevronUp,
   faAppleAlt, 
   faTimes,
-  faPen)
+  faPen,
+  faChartPie,
+  faFlag,
+  faUser
+)
 
 const app = createApp(App)
 app.use(router)

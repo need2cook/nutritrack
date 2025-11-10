@@ -168,7 +168,27 @@
             </div>
           </div>
         </div>
-      </div>  
+      </div>
+
+      <!-- График БЖУ -->
+      <div class="container">
+        <div class="container-header">
+          <div class="container-title">
+            <div class="title-row">
+              <font-awesome-icon :icon="['fas', 'chart-pie']" />
+              <h3>Баланс БЖУ</h3>
+            </div>
+          </div>
+        </div>
+        <div class="container-content">
+          <MacrosChart 
+          :proteins="Number(totalProteins)" 
+          :fats="Number(totalFats)" 
+          :carbs="Number(totalCarbs)" 
+          :size="110"
+          />
+        </div>
+      </div>
     </div>
 
     <!-- Панель добавления Продуктов -->
@@ -263,6 +283,7 @@
 <script>
 import WeekCalendar from '@/components/WeekCalendar.vue';
 import Header from "@/components/Header.vue";
+import MacrosChart from '@/components/MacrosChart.vue';
 
 import { fetchProducts } from '@/api/products.js';
 import { fetchExercises } from '@/api/exercises.js';
@@ -274,7 +295,8 @@ export default {
   name: 'DietPage',
   components: { 
     Header,
-    WeekCalendar
+    WeekCalendar,
+    MacrosChart
   },
   data() {
     return {
