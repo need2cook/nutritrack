@@ -5,7 +5,7 @@
       :selected-date="selectedDate"
       @date-selected="onDateSelected"
     />
-
+    
     <!-- Общая сводка калорий -->
     <section class="summary-card">
       <div class="macros-summary">

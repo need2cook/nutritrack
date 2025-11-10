@@ -51,13 +51,13 @@ export default {
   align-items: center;
   text-decoration: none;
   font-family: Arial, Helvetica, sans-serif;
-  color: white;
+  color: rgb(129, 240, 129);
   transition: all 0.3s ease;
   flex: 1;
 }
 
 .nav-item.active {
-  color: rgb(129, 240, 129)
+  color: white;
 }
 
 .nav-item svg {
