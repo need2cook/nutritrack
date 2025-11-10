@@ -16,7 +16,22 @@
     <!-- Статистика калорий -->
     <div class="calories-stats">
       <div class="stats-card">
-        <h3>Статистика за сегодня</h3>
+        <div class="stats-header">
+          <h3>Статистика за сегодня</h3>
+          <button class="settings-btn" @click="showSettingsMenu = !showSettingsMenu">
+            <font-awesome-icon :icon="['fas', 'cog']" class="stat-icon eaten"/>
+          </button>
+          
+          <!-- Меню настроек -->
+          <div v-if="showSettingsMenu" class="settings-menu">
+            <button class="menu-item" @click="showWeightModal = true; showSettingsMenu = false">
+              Изменить Вес
+            </button>
+            <button class="menu-item" @click="showGoalModal = true; showSettingsMenu = false">
+              Изменить РСК
+            </button>
+          </div>
+        </div>
 
         <div class="stats-grid">
           <div class="stat-item">
@@ -44,8 +59,8 @@
               <font-awesome-icon :icon="['fas', 'flag']" class="stat-icon eaten" />
             </div>
             <div class="stat-content">
-              <div class="stat-value">{{ calorieGoal }} ккал</div>
-              <div class="stat-label">Норма</div>
+              <div class="stat-value">{{ goal }} ккал</div>
+              <div class="stat-label">РСК</div>
             </div>
           </div>
           
@@ -57,9 +72,6 @@
               <div class="stat-value">{{ weight }} кг</div>
               <div class="stat-label">Вес</div>
             </div>
-            <button class="edit-weight-btn" @click="showWeightModal = true">
-              <font-awesome-icon :icon="['fas', 'pen']" />
-            </button>
           </div>
         </div>
       </div>
@@ -69,9 +81,9 @@
     <div v-if="showWeightModal" class="modal-overlay" @click="showWeightModal = false">
       <div class="modal-content" @click.stop>
         <h3>Мой Вес</h3>
-        <div class="weight-input-section">
-          <input type="number" v-model.number="weight" class="weight-input" placeholder="Введите вес"/>
-          <span class="weight-unit">кг</span>
+        <div class="input-section">
+          <input type="number" v-model.number="weightInput" class="modal-input" placeholder="Введите вес"/>
+          <span class="input-unit">кг</span>
         </div>
         <div class="modal-actions">
           <button class="btn secondary" @click="showWeightModal = false">Отмена</button>
@@ -79,11 +91,26 @@
         </div>
       </div>
     </div>
+
+    <!-- Окно для РСК -->
+    <div v-if="showGoalModal" class="modal-overlay" @click="showGoalModal = false">
+      <div class="modal-content" @click.stop>
+        <h3>РСК</h3>
+        <div class="input-section">
+          <input type="number" v-model.number="goalInput" class="modal-input" placeholder="Введите РСК"/>
+          <span class="input-unit">ккал</span>
+        </div>
+        <div class="modal-actions">
+          <button class="btn secondary" @click="showGoalModal = false">Отмена</button>
+          <button class="btn primary" @click="saveGoal">Сохранить</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { getUserProfile, updateUserWeight } from '@/api/user.js'
+import { getUserProfile, updateUserWeight, updateUserGoal } from '@/api/user.js'
 import { fetchDay } from '@/api/day.js';
 
 export default {
@@ -93,13 +120,19 @@ export default {
       username: '',
       firstName: '',
       weight: 0,
+      goal: 0,
       showWeightModal: false,
+      showGoalModal: false,
+      showSettingsMenu: false,
       loading: false,
+      
+      // Временные значения для модальных окон
+      weightInput: 0,
+      goalInput: 0,
       
       // Статистика калорий
       caloriesEaten: 0,
       caloriesBurned: 0,
-      calorieGoal: 2400,
       
       // Храним initData
       initData: null
@@ -109,6 +142,19 @@ export default {
   computed: {
     calorieBalance() {
       return this.caloriesEaten - this.caloriesBurned;
+    }
+  },
+
+  watch: {
+    showWeightModal(newVal) {
+      if (newVal) {
+        this.weightInput = this.weight;
+      }
+    },
+    showGoalModal(newVal) {
+      if (newVal) {
+        this.goalInput = this.goal;
+      }
     }
   },
 
@@ -130,7 +176,7 @@ export default {
       // Сохраняем initData
       this.initData = telegramInitData;
 
-      // Загружаем данные дня
+      // Загружаем данные
       await this.loadUserProfile();
       await this.loadTodayCalories();
     } catch (err) {
@@ -144,13 +190,17 @@ export default {
         console.warn('InitData отсутствует');
         return;
       }
-
+      
       this.loading = true;
       try {
         const user = await getUserProfile(this.initData)
+        console.log('Данные пользователя:', user); // Для отладки
+        
         this.username = user.username
         this.firstName = user.first_name
         this.weight = user.current_weight
+        this.goal = user.goal
+
       } catch (e) {
         console.error('Ошибка загрузки профиля:', e)
       } finally {
@@ -194,12 +244,43 @@ export default {
         return;
       }
 
+      if (!this.weightInput || this.weightInput <= 0) {
+        alert('Пожалуйста, введите корректный вес');
+        return;
+      }
+
       this.loading = true;
       try {
-        await updateUserWeight(this.weight, this.initData)
+        await updateUserWeight(this.weightInput, this.initData)
+        this.weight = this.weightInput;
         this.showWeightModal = false;
       } catch (e) {
         console.error('Ошибка обновления веса:', e);
+        alert('Ошибка при сохранении веса');
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    async saveGoal() {
+      if (!this.initData) {
+        console.warn('InitData отсутствует');
+        return;
+      }
+
+      if (!this.goalInput || this.goalInput <= 0) {
+        alert('Пожалуйста, введите корректное значение РСК');
+        return;
+      }
+
+      this.loading = true;
+      try {
+        await updateUserGoal(this.goalInput, this.initData)
+        this.goal = this.goalInput;
+        this.showGoalModal = false;
+      } catch (e) {
+        console.error('Ошибка обновления РСК:', e);
+        alert('Ошибка при сохранении РСК');
       } finally {
         this.loading = false;
       }
@@ -268,13 +349,88 @@ export default {
   border-radius: 20px;
   padding: 24px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
-.stats-card h3 {
-  margin: 0 0 10px 0;
-  text-align: center;
+.stats-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.stats-header h3 {
+  margin: 0;
   color: #2e7d32;
   font-weight: bold;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.settings-btn {
+  margin-left: auto;
+}
+
+/* Кнопка настроек */
+.settings-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #4caf50, #66bb6a);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 16px;
+}
+
+.settings-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+/* Меню настроек */
+.settings-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 8px;
+  z-index: 100;
+  min-width: 180px;
+  margin-top: 8px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 14px;
+  color: #333;
+  text-align: left;
+}
+
+.menu-item:hover {
+  background: #f5f5f5;
+}
+
+.menu-item .svg-inline--fa {
+  width: 16px;
+  color: #4caf50;
 }
 
 .stats-grid {
@@ -288,9 +444,13 @@ export default {
   align-items: center;
   background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
   border-radius: 16px;
+  padding: 16px;
+  gap: 12px;
 }
 
 .stat-icon-wrapper {
+  width: 44px;
+  height: 44px;
   border-radius: 12px;
   display: flex;
   background: white;
@@ -310,6 +470,7 @@ export default {
 .stat-icon.burned {
   color: #f44336;
 }
+
 .stat-content {
   display: flex;
   flex-direction: column;
@@ -328,29 +489,6 @@ export default {
   font-size: 12px;
   color: #666;
   font-weight: 500;
-}
-
-/* Кнопка редактирования веса */
-.edit-weight-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  border: none;
-  background: linear-gradient(135deg, #4caf50, #66bb6a);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 12px;
-  flex-shrink: 0;
-  margin-left: auto;
-}
-
-.edit-weight-btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
 }
 
 /* Модальное окно */
@@ -380,10 +518,9 @@ export default {
   margin: 0 0 20px 0;
   text-align: center;
   color: #333;
-
 }
 
-.weight-input-section {
+.input-section {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -394,10 +531,19 @@ export default {
   border: 1px solid #e0e0e0;
 }
 
-.weight-input {
+.modal-input {
   flex: 1;
   border: none;
+  background: none;
   font-weight: 600;
+  color: #333;
+  outline: none;
+}
+
+.input-unit {
+  color: #666;
+  font-weight: 600;
+  font-size: 14px;
 }
 
 .modal-actions {
@@ -492,10 +638,15 @@ export default {
     font-size: 14px;
   }
   
-  .edit-weight-btn {
-    width: 28px;
-    height: 28px;
-    font-size: 10px;
+  .settings-btn {
+    width: 36px;
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    height: 36px;
+    font-size: 14px;
+  }
+  
+  .settings-menu {
+    min-width: 160px;
   }
 }
 

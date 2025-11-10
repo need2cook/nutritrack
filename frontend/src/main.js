@@ -20,7 +20,8 @@ import {
   faPen,
   faChartPie,
   faFlag,
-  faUser 
+  faUser,
+  faCog
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
@@ -38,7 +39,8 @@ library.add(
   faPen,
   faChartPie,
   faFlag,
-  faUser
+  faUser,
+  faCog
 )
 
 const app = createApp(App)

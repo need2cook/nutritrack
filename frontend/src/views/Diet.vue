@@ -26,8 +26,8 @@
       <!-- Калории и вода -->
       <div class="daily-summary">
         <div class="summary-block">
-          <span class="summary-label">Норма калорий</span>
-          <span class="summary-value">{{calorieIntake}} ккал.</span>
+          <span class="summary-label">РСК</span>
+          <span class="summary-value">{{ goal }} ккал.</span>
         </div>
         <div class="summary-block">
           <span class="summary-label">Съедено</span>
@@ -288,6 +288,7 @@ import MacrosChart from '@/components/MacrosChart.vue';
 import { fetchProducts } from '@/api/products.js';
 import { fetchExercises } from '@/api/exercises.js';
 import { fetchDay, addProductToDay, addExerciseToDay, addWaterToDay } from '@/api/day.js';
+import { getUserProfile} from '@/api/user.js'
 import { deleteProduct, deleteExercise } from '@/api/delete.js';
 import { authHandshake } from '@/api/auth.js';
 
@@ -302,7 +303,8 @@ export default {
     return {
       selectedDate: new Date(),
       selectedDateString: new Date().toISOString().split('T')[0],
-      calorieIntake: 2400,
+      calorieIntake: 0,
+      goal: 0,
       expandedContainers: {
         meals: true,
         exercises: true,
@@ -378,6 +380,7 @@ export default {
       ) || 0;
     },
   },
+  
   async mounted() {
     try {
       // Получаем initData
@@ -396,8 +399,9 @@ export default {
       // Сохраняем initData
       this.initData = telegramInitData;
 
-      // Загружаем данные дня
+      // Загружаем данные
       await this.fetchDayData();
+      await this.loadUserProfile();
     } catch (err) {
       console.error('Ошибка авторизации:', err);
     }
@@ -422,6 +426,24 @@ export default {
           exersice_entries: [],
           water_mls: 0
         };
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    async loadUserProfile() {
+      if (!this.initData) {
+        console.warn('InitData отсутствует');
+        return;
+      }
+      
+      this.loading = true;
+      try {
+        const user = await getUserProfile(this.initData)
+        this.goal = user.goal
+
+      } catch (e) {
+        console.error('Ошибка загрузки профиля:', e)
       } finally {
         this.loading = false;
       }
