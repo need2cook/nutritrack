@@ -387,7 +387,10 @@ export default {
 
     // Получаем initData из Telegram WebApp
     const telegramInitData = window?.Telegram?.WebApp?.initData;
-
+     
+    console.log('Telegram WebApp available:', !!window.Telegram?.WebApp);
+    console.log('Telegram initData:', telegramInitData);
+    
     // Если приложение открыто не через Telegram
     if (!telegramInitData) {
       console.warn('Telegram initData не найден — dev fallback.');
@@ -395,12 +398,12 @@ export default {
       return;
     }
 
+    // Сохраняем initData
+    this.initData = telegramInitData;
+
     // Выполняем handshake с сервером
     const authResult = await authHandshake(telegramInitData);
     console.log('Handshake успешен:', authResult);
-
-    // Сохраняем initData
-    this.initData = telegramInitData;
 
     // Загружаем данные пользователя
     await this.fetchDayData();

@@ -112,6 +112,7 @@
 <script>
 import { getUserProfile, updateUserWeight, updateUserGoal } from '@/api/user.js'
 import { fetchDay } from '@/api/day.js';
+import { authHandshake } from '@/api/auth.js';
 
 export default {
   name: 'ProfilePage',
@@ -164,6 +165,9 @@ export default {
 
     // Получаем initData из Telegram WebApp
     const telegramInitData = window?.Telegram?.WebApp?.initData;
+    
+    console.log('Telegram WebApp available:', !!window.Telegram?.WebApp);
+    console.log('Telegram initData:', telegramInitData);
 
     // Если приложение открыто не через Telegram
     if (!telegramInitData) {

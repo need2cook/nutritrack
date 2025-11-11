@@ -1,8 +1,7 @@
 export async function apiFetch(url, options = {}) {
   const defaultHeaders = {
     'Accept': 'application/json',
-    'Content-Type': 'application/json',
-    'X-Telegram-Init-Data': options.initData || ''
+    'Content-Type': 'application/json'
   };
 
   const response = await fetch(url, {
@@ -15,7 +14,6 @@ export async function apiFetch(url, options = {}) {
     throw new Error(`Ошибка ${response.status}: ${message}`);
   }
 
-  // Возвращаем JSON, если возможно
   try {
     return await response.json();
   } catch {
