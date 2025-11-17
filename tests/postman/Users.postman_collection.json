@@ -1,0 +1,93 @@
+{
+	"info": {
+		"_postman_id": "e6b80309-7d71-4eb6-920d-94024029bcc7",
+		"name": "Users",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49720802",
+		"_collection_link": "https://natysya030704-5571868.postman.co/workspace/Nutritrack~580cc49f-30d2-4951-b5c0-1023c1abbce3/collection/49720802-e6b80309-7d71-4eb6-920d-94024029bcc7?action=share&source=collection_link&creator=49720802"
+	},
+	"item": [
+		{
+			"name": "me",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Telegram-Init-Data",
+						"value": "{{telegram_init_data}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/v1/users/me",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"me"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "edit weight",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-Telegram-Init-Data",
+						"value": "{{telegram_init_data}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"new_weight\": 45\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/users/me/weight",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"me",
+						"weight"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
